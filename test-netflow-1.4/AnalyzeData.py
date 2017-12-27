@@ -5,7 +5,7 @@ import sys
 class AnalyzeData(threading.Thread):
     def __init__(self, dct, logger, exception_queue, name, userargs):
         # threading.Thread.__init__(self)
-        super(AnalyzeData, self).__init__(name)
+        super(AnalyzeData, self).__init__()
         self.dct = dct
         self.logger = logger
         self.exception_queue = exception_queue

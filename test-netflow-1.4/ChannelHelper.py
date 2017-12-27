@@ -23,7 +23,7 @@ class ChannelHelper:
             return
 
         except Exception as e:
-            raise NameError("Class ChannelHelper, mainLogic method() exception: ", e)
+            raise NameError("Class ChannelHelper -- mainLogic method() exception: " +str(e))
 
     def __send_ssh_events(self, command, channel):
         try:
@@ -43,9 +43,9 @@ class ChannelHelper:
                 try:
                     buff += channel.recv(4096)
                     # DEBUG View prompt to STDOUT
-                    # print buff
+                    # print(buff)
                     count += 1
-                # print "Count: " +str(count)
+                    # print("Count: " +str(count))
                 except  Exception as e:
                     self.logger.error('scan_buffer_end(): Timeout event while scanning buffer: %s', e)
                     raise NameError("scan_buffer_end fuction got an exception!")

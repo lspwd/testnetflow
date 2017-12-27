@@ -88,14 +88,14 @@ class Server(threading.Thread):
                                                         % (ip, port)
                 self.logger.debug("%s Socket on \"%s:%s\" has been deployed via netcat", self.tid, ip, port)
             except Exception as e:
-                self.logger.error("__deploySocket Error: %s", e)
-                raise NameError("Error in __deploySocket() method: ", e)
+                self.logger.error("__deploySocket Error: %s" +str(e))
+                raise NameError("Error in __deploySocket() method: " +str(e))
             finally:
                 if chan:
                     chan.close()
         else:
             try:
-                cmd = ('nohup ' + self.netcat + ' -kl ' + ip + ' ' + port + ' 2>&1 > /dev/null &\n')
+                cmd = ('nohup ' + self.netcat + ' -kl ' + ip + ' ' + port + ' > /dev/null 2>&1 &\n')
                 # cmd = ('nohup /usr/bin/nc -kl ' +ip +' ' +port +' 2>&1 > /dev/null &\n')
                 channelhelper = ChannelHelper(chan, self.logger, cmd)
                 channelhelper.mainLogic()
@@ -113,7 +113,7 @@ class Server(threading.Thread):
                 raise NameError("Error in __deploySocket() method: ", e)
 
             finally:
-                if chan:
+                if hasattr(chan,"close"):
                     chan.close()
 
     def run(self):

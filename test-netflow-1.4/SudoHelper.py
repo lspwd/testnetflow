@@ -53,11 +53,11 @@ class SudoHelper:
                 try:
                     buff = channel.recv(4096)
                     # DEBUG View prompt to STDOUT
-                    # print resp
+                    # print(buff)
                     count += 1
-                # print "Count: " +str(count)
+                    # print("Count: " +str(count))
                 except  Exception, e:
-                    self.logger.error('scan_buffer_end(): Timeout event while scanning buffer: %s', e)
+                    self.logger.error('scan_buffer_end(): Timeout event while scanning buffer: %s',e)
                     raise NameError("scan_buffer_end fuction got an exception!")
             else:
                 self.logger.error('scan_buffer_end(): Buffer scanning error: Can not find pattern %s', testpattern)

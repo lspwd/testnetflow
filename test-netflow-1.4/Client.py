@@ -7,7 +7,7 @@ from NetcatValidator import NetcatValidator
 class Client(threading.Thread):
     # server[mgmtip],server[username],server[password],server[socket]
     def __init__(self, dct, logger, queue, exception_queue, netcat, name, mutex, userargs):
-        super(Client, self).__init__(self)
+        super(Client, self).__init__()
         self.mgmtipclient = dct["mgmtip"]
         # print "self.mgmtipclient: " +self.mgmtipclient
         self.username = dct["username"]
