@@ -1,0 +1,249 @@
+###########################################################
+#Please Add a New Section like [Name-Number] eg. [Section-1]
+############################################################
+
+[TestServer-1]
+
+#Client
+MgmtClient = 172.19.163.69
+UsernameClient = administrator
+PasswordClient = Password1
+
+#Server1
+MgmtServer1 = 172.19.163.76
+HostServer1 = 172.26.96.173:9990 172.26.96.173:9991 172.26.96.173:9992 172.26.96.173:9993 172.26.96.173:9994 172.26.96.173:9995 172.26.96.173:9996 172.26.96.173:9997 172.26.96.173:9998 172.26.96.173:9999 172.26.96.173:80 172.26.96.173:8080
+UsernameServer1 = administrator
+PasswordServer1 = Password1
+
+#ServerN
+MgmtServer2 = 172.19.163.81
+HostServer2 = 172.26.96.176:9990 172.26.96.176:9991 172.26.96.176:9992 172.26.96.176:9993 172.26.96.176:9994 172.26.96.176:9995 172.26.96.176:9996 172.26.96.176:9997 172.26.96.176:9998 172.26.96.176:9999  172.26.96.176:80 172.26.96.176:8080
+UsernameServer2 = administrator
+PasswordServer2 = Password1
+
+
+###################################
+#Optional Load Balancer
+###################################
+
+#Balancer1
+
+#Lb1Vip = 127.0.0.1:5555
+#
+#Lb1MemberMgmtIp1 = 10.6.1.2
+#Lb1MemberSocket1 = 10.0.2.10:7777
+#Lb1MemberUsername1 = administrator
+#Lb1MemberPassword1 = Password1
+#
+#Lb1MemberMgmtIp2 = 10.6.1.3 
+#Lb1MemberSocket2 = 10.0.2.11:7777
+#Lb1MemberUsername2 = administrator
+#LB1MemberPassword2 = Password1
+#
+##BalancerN
+#
+#Lb2Vip = 10.6.1.2:7788
+#
+#Lb2MemberMgmtIp1 = 10.6.1.4
+#Lb2MemberSocket1 = 10.0.2.10:7788
+#Lb2MemberUsername1 = administrator
+#Lb2MemberPassword1 = Password1
+#
+#Lb2MemberMgmtIp2 = 10.6.1.5 
+#Lb2MemberSocket2 = 10.0.2.11:7788
+#Lb2MemberUsername2 = administrator
+#Lb2MemberPassword2 = Password1
+
+###################################
+#Optional External Servers
+###################################
+
+#P2pHostList = 10.6.222.2:3128 172.26.166.49:80
+
+#
+#################
+##END OF SECTION#
+#################
+#
+
+[TestServer-2]
+
+#Client
+MgmtClient = 172.19.163.76
+UsernameClient = administrator
+PasswordClient = Password1
+
+#Server1
+MgmtServer1 = 172.19.163.69
+HostServer1 = 172.26.96.168:9990 172.26.96.168:9991 172.26.96.168:9992 172.26.96.168:9993 172.26.96.168:9994 172.26.96.168:9995 172.26.96.168:9996 172.26.96.168:9997 172.26.96.168:9998 172.26.96.168:9999 172.26.96.168:80 172.26.96.168:8080
+UsernameServer1 = administrator
+PasswordServer1 = Password1
+
+#Server2
+MgmtServer2 = 172.19.163.81
+HostServer2 = 172.26.96.176:9990 172.26.96.176:9991 172.26.96.176:9992 172.26.96.176:9993 172.26.96.176:9994 172.26.96.176:9995 172.26.96.176:9996 172.26.96.176:9997 172.26.96.176:9998 172.26.96.176:9999  172.26.96.176:80 172.26.96.176:8080
+UsernameServer2 = administrator
+PasswordServer2 = Password1
+
+
+###################################
+#Optional Load Balancer
+###################################
+
+#Balancer1
+
+#Lb1Vip = 127.0.0.1:5555
+#
+#Lb1MemberMgmtIp1 = 10.6.1.2
+#Lb1MemberSocket1 = 10.0.2.10:7777
+#Lb1MemberUsername1 = administrator
+#Lb1MemberPassword1 = Password1
+#
+#Lb1MemberMgmtIp2 = 10.6.1.3 
+#Lb1MemberSocket2 = 10.0.2.11:7777
+#Lb1MemberUsername2 = administrator
+#LB1MemberPassword2 = Password1
+#
+##BalancerN
+#
+#Lb2Vip = 10.6.1.2:7788
+#
+#Lb2MemberMgmtIp1 = 10.6.1.4
+#Lb2MemberSocket1 = 10.0.2.10:7788
+#Lb2MemberUsername1 = administrator
+#Lb2MemberPassword1 = Password1
+#
+#Lb2MemberMgmtIp2 = 10.6.1.5 
+#Lb2MemberSocket2 = 10.0.2.11:7788
+#Lb2MemberUsername2 = administrator
+#Lb2MemberPassword2 = Password1
+
+###################################
+#Optional External Servers
+###################################
+
+#P2pHostList = 10.6.222.2:3128 172.26.166.49:80
+#
+#
+#################
+##END OF SECTION#
+#################
+
+
+[TestServer-3]
+
+#Client
+MgmtClient = 172.19.163.81
+UsernameClient = administrator
+PasswordClient = Password1
+
+#Server1
+MgmtServer1 = 172.19.163.69
+HostServer1 = 172.26.96.168:9990 172.26.96.168:9991 172.26.96.168:9992 172.26.96.168:9993 172.26.96.168:9994 172.26.96.168:9995 172.26.96.168:9996 172.26.96.168:9997 172.26.96.168:9998 172.26.96.168:9999 172.26.96.168:80 172.26.96.168:8080
+UsernameServer1 = administrator
+PasswordServer1 = Password1
+
+#Server2
+MgmtServer2 = 172.19.163.76
+HostServer2 = 172.26.96.173:9990 172.26.96.173:9991 172.26.96.173:9992 172.26.96.173:9993 172.26.96.173:9994 172.26.96.173:9995 172.26.96.173:9996 172.26.96.173:9997 172.26.96.173:9998 172.26.96.173:9999 172.26.96.173:80 172.26.96.173:8080
+UsernameServer2 = administrator
+PasswordServer2 = Password1
+
+###################################
+#Optional Load Balancer
+###################################
+
+#Balancer1
+
+#Lb1Vip = 127.0.0.1:5555
+#
+#Lb1MemberMgmtIp1 = 10.6.1.2
+#Lb1MemberSocket1 = 10.0.2.10:7777
+#Lb1MemberUsername1 = administrator
+#Lb1MemberPassword1 = Password1
+#
+#Lb1MemberMgmtIp2 = 10.6.1.3 
+#Lb1MemberSocket2 = 10.0.2.11:7777
+#Lb1MemberUsername2 = administrator
+#LB1MemberPassword2 = Password1
+#
+##BalancerN
+#
+#Lb2Vip = 10.6.1.2:7788
+#
+#Lb2MemberMgmtIp1 = 10.6.1.4
+#Lb2MemberSocket1 = 10.0.2.10:7788
+#Lb2MemberUsername1 = administrator
+#Lb2MemberPassword1 = Password1
+#
+#Lb2MemberMgmtIp2 = 10.6.1.5 
+#Lb2MemberSocket2 = 10.0.2.11:7788
+#Lb2MemberUsername2 = administrator
+#Lb2MemberPassword2 = Password1
+
+###################################
+#Optional External Servers
+###################################
+
+#P2pHostList = 10.6.222.2:3128 172.26.166.49:80
+#
+#################
+##END OF SECTION#
+#################
+
+[TestServer-4]
+
+#Client
+MgmtClient = 172.19.200.49
+UsernameClient = administrator
+PasswordClient = Password1
+
+#Server1
+MgmtServer1 = 172.19.163.69
+HostServer1 = 172.26.96.168:9990 172.26.96.168:9991 172.26.96.168:9992 172.26.96.168:9993 172.26.96.168:9994 172.26.96.168:9995 172.26.96.168:9996 172.26.96.168:9997 172.26.96.168:9998 172.26.96.168:9999 172.26.96.168:80 172.26.96.168:8080
+UsernameServer1 = administrator
+PasswordServer1 = Password1
+
+#Server2
+MgmtServer2 = 172.19.163.76
+HostServer2 = 172.26.96.173:9990 172.26.96.173:9991 172.26.96.173:9992 172.26.96.173:9993 172.26.96.173:9994 172.26.96.173:9995 172.26.96.173:9996 172.26.96.173:9997 172.26.96.173:9998 172.26.96.173:9999 172.26.96.173:80 172.26.96.173:8080
+UsernameServer2 = administrator
+PasswordServer2 = Password1
+
+###################################
+#Optional Load Balancer
+###################################
+
+#Balancer1
+
+#Lb1Vip = 127.0.0.1:5555
+#
+#Lb1MemberMgmtIp1 = 10.6.1.2
+#Lb1MemberSocket1 = 10.0.2.10:7777
+#Lb1MemberUsername1 = administrator
+#Lb1MemberPassword1 = Password1
+#
+#Lb1MemberMgmtIp2 = 10.6.1.3 
+#Lb1MemberSocket2 = 10.0.2.11:7777
+#Lb1MemberUsername2 = administrator
+#LB1MemberPassword2 = Password1
+#
+##BalancerN
+#
+#Lb2Vip = 10.6.1.2:7788
+#
+#Lb2MemberMgmtIp1 = 10.6.1.4
+#Lb2MemberSocket1 = 10.0.2.10:7788
+#Lb2MemberUsername1 = administrator
+#Lb2MemberPassword1 = Password1
+#
+#Lb2MemberMgmtIp2 = 10.6.1.5 
+#Lb2MemberSocket2 = 10.0.2.11:7788
+#Lb2MemberUsername2 = administrator
+#Lb2MemberPassword2 = Password1
+
+###################################
+#Optional External Servers
+###################################
+
+#P2pHostList = 10.6.222.2:3128 172.26.166.49:80

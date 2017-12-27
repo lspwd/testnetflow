@@ -1,0 +1,1 @@
+ERROR:  2017-12-27 16:06:14,535 - Error caught in Main Thread, raised from Server Class Error in __sshConnect() method --- on server: 172.19.200.98 Authentication failed.

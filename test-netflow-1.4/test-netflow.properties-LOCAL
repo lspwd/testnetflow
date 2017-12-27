@@ -1,0 +1,96 @@
+###########################################################
+#Please Add a New Section like [Name-Number] eg. [Section-1]
+############################################################
+
+[TestServer-1]
+
+#Client
+MgmtClient = 127.0.0.1
+UsernameClient = administrator
+PasswordClient = Password2
+
+#Server1
+MgmtServer1 = 10.6.1.1 
+HostServer1 = 10.0.2.10:9999 10.0.2.10:9998 10.0.2.10:9997 10.0.2.10:80
+UsernameServer1 = administrator
+PasswordServer1 = Password2
+
+#ServerN
+MgmtServer2 = 10.6.1.2
+HostServer2 = 10.0.2.11:9999 10.0.2.11:9998 10.0.2.11:9997 10.0.2.11:80
+UsernameServer2 = administrator
+PasswordServer2 = Password1
+
+###################################
+#Optional Load Balancer
+#
+
+#Balancer1
+
+Lb1Vip = 127.0.0.1:5555
+
+Lb1MemberMgmtIp1 = 10.6.1.2
+Lb1MemberSocket1 = 10.0.2.10:7777
+Lb1MemberUsername1 = administrator
+Lb1MemberPassword1 = Password1
+
+Lb1MemberMgmtIp2 = 10.6.1.3 
+Lb1MemberSocket2 = 10.0.2.11:7777
+Lb1MemberUsername2 = administrator
+LB1MemberPassword2 = Password1
+
+#BalancerN
+
+Lb2Vip = 10.6.1.2:7788
+
+Lb2MemberMgmtIp1 = 10.6.1.4
+Lb2MemberSocket1 = 10.0.2.10:7788
+Lb2MemberUsername1 = administrator
+Lb2MemberPassword1 = Password1
+
+Lb2MemberMgmtIp2 = 10.6.1.5 
+Lb2MemberSocket2 = 10.0.2.11:7788
+Lb2MemberUsername2 = administrator
+Lb2MemberPassword2 = Password1
+
+
+###################################
+#Optional Load Balancer
+#
+P2pHostList = 10.6.222.2:3128 172.26.166.49:80
+
+#
+#################
+##END OF SECTION#
+#################
+#
+##############################################################
+##
+#[TestServer-2]
+#
+##Client
+#MgmtClient = 172.26.166.55
+#UsernameClient = administrator
+#PasswordClient = Password1
+#
+##Server1
+#MgmtServer1 = 10.6.5.21
+#HostServer1 = 172.26.96.7:9999 172.26.96.7:9998 172.26.96.7:9997 172.26.96.7:80
+#UsernameServer1 = administrator
+#PasswordServer1 = Password1
+#
+##Server2
+#MgmtServer2 = 10.6.5.22
+#HostServer2 = 10.10.10.10:2222 10.10.10:10:7001 
+#UsernameServer2 = administrator
+#PasswordServer2 = Password1
+#
+##Server3
+#MgmtServer3 = 10.6.5.10
+#HostServer2 = 10.10.10.10:2222 10.10.10:10:7001 10.10.10.10:8080
+#UsernameServer3 = administrator
+#PasswordServer3 = Password1
+#
+#################
+##END OF SECTION#
+#################
