@@ -1,9 +1,12 @@
+#!/usr/bin/python
+
 import threading
 import sys
 import paramiko
 from ChannelHelper import ChannelHelper
 from NetcatValidator import NetcatValidator
 from SudoHelper import SudoHelper
+from SSHHelper import SSHHelper
 
 
 class Server(threading.Thread):
@@ -28,10 +31,10 @@ class Server(threading.Thread):
             self.client.load_system_host_keys()
             self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             if self.userargs.stdout:
-                print "DEBUG STDOUT: " + self.tid + " Username: \"%s\", Password: \"%s\" and ip address: \"%s\"" % (
-                    self.username, self.password, self.mgmtipserver)
-            self.logger.debug(
-                '%s - Server class - __sshConnect(): Connecting with Username: \"%s\", Password \"%s\" and ip \"%s\"',
+                print ("DEBUG STDOUT: " + self.tid + " Username: \"%s\", Password: \"%s\" and ip address: \"%s\"" % (
+                    self.username, self.password, self.mgmtipserver))
+            self.logger.debug('%s - Server class - __sshConnect(): Connecting with Username: \"%s\",'
+                              ' Password \"%s\" and ip \"%s\"',
                 self.tid, self.username, self.password, self.mgmtipserver)
             self.client.connect(self.mgmtipserver, username=self.username, password=self.password, timeout=2,
                                 allow_agent=False, look_for_keys=False)
@@ -119,7 +122,14 @@ class Server(threading.Thread):
     def run(self):
 
         try:
-            client = self.__sshConnect()
+            # Try to upload tmpServer.py
+            # fetch ip
+            helper = SSHHelper(self.mgmtipserver, self.username, self.password, self.mutex, self.userargs, self.tid,
+                               self.logger )
+            client = helper.sshConnect()
+
+            # 
+
             netcatvalidator = NetcatValidator(client, self.netcat,
                                               self.mgmtipserver, self.tid, self.logger, self.userargs)
             if not netcatvalidator.validate():

@@ -1,6 +1,9 @@
+#!/usr/bin/python
+
 import os
 import logging
 from logging import handlers
+
 
 class Log:
     def __init__(self, logname, level, customclass):
