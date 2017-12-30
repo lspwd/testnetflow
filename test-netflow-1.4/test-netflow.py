@@ -6,18 +6,19 @@
 # Test NetFlows oO Threaded 1.4
 #############################################################
 
-import argparse
-import time
-import threading
 import Queue
+import argparse
+import threading
+import time
 
-from Configurator import Configurator
-from ConfigLogic import ConfigLogic
-from Log import Log
-from AnalyzeData import AnalyzeData
-from Client import Client
 from Server import Server
-from CloseHelper import CloseHelper
+
+from impl.Client import Client
+from util.AnalyzeData import AnalyzeData
+from util.CloseHelper import CloseHelper
+from util.ConfigLogic import ConfigLogic
+from util.Configurator import Configurator
+from util.Log import Log
 
 ##############################################################
 

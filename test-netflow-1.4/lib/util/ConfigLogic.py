@@ -88,8 +88,8 @@ class ConfigLogic:
                         # print "duplicated data were not found !"
                         lst.append(server)
 
-                except Exception, e:
-                    raise NameError("Exception in __internalLogicServer method!", e)
+                except Exception as e:
+                    raise NameError( "Exception in __internalLogicServer method!" + str(e))
 
                 # print "Dizionario al termine del loop -> " +str(server)
             else:
@@ -175,8 +175,8 @@ class ConfigLogic:
                             # print "For Load Balancer duplicated data were not found !"
                             lst.append(server)
 
-                except Exception, e:
-                    raise NameError("Exception in __internalLogicLoadBalancer method!", e)
+                except Exception as e:
+                    raise NameError("Exception in __internalLogicLoadBalancer method! " + str(e))
 
                 # print "Lista in uscita! -->" +str(lst)
             else:

@@ -1,7 +1,9 @@
-import threading
 import sys
+import threading
+
 import paramiko
-from SudoHelper import SudoHelper
+
+from impl.SudoHelper import SudoHelper
 
 
 class CloseHelper(threading.Thread):
