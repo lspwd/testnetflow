@@ -1,4 +1,4 @@
-import ChannelHelper
+from ChannelHelper import ChannelHelper
 
 
 class SudoHelper(ChannelHelper):

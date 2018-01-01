@@ -3,12 +3,12 @@ from datetime import datetime
 
 import paramiko
 
-from exceptions.FileNotFoundError import FileNotFoundError
-from exceptions.PythonNotFoundError import PythonNotFoundError
-from impl.SudoHelper import SudoHelper
+from FileNotFoundError import FileNotFoundError
+from PythonNotFoundError import PythonNotFoundError
+from SudoHelper import SudoHelper
 
 
-class SSHHelper:
+class SSHHelper(object):
     def __init__(self, ip, username, password, mutex, userargs, tid, logger):
         self.ip = ip
         self.username = username
@@ -18,6 +18,7 @@ class SSHHelper:
         self.tid = tid
         self.logger = logger
         self.uploaded = False
+        self.default_she_bang = "#!/usr/bin/python"
 
     def sshConnect(self):
         try:
@@ -87,6 +88,20 @@ class SSHHelper:
         except Exception as e:
             raise RuntimeError("Unable to verify python version on the remote machine: " + str(e))
 
+    def checkTheSheBang(self, python_she_bang):
+        return python_she_bang == self.default_she_bang
+
+    # TODO ---------- to be implemented
+    def sedTheSheBang(self, client, python_she_bang, target_script ):
+        try:
+            if not self.checkTheSheBang(python_she_bang):
+                cmd = "sed -i 's@#!/usr/bin/python@" +python_she_bang + "@g' " + target_script
+                stdin, stdout, stderr = client.exec_command(cmd)
+                if stderr:
+                    raise RuntimeError("Unable to sed the shebang on the remote machine")
+        except Exception as e:
+            raise RuntimeError("Unable to sed the shebang on the remote machine: " + str(e))
+
     def checkSudo(self, client):
         try:
             chan = client.invoke_shell()
@@ -102,10 +117,10 @@ class SSHHelper:
     def isUploaded(self):
         return self.uploaded
 
-    def upload(self, client, script, remote_path):
-        if os.path.isfile(script):
+    def upload(self, client, script_local_path, script, remote_path):
+        if os.path.isfile(script_local_path):
             sftp_client = client.open_sftp()
-            file_attr = sftp_client.put(script, remote_path + script)
+            file_attr = sftp_client.put(script_local_path, remote_path + script)
             if file_attr:
                 self.setUploadedStatus(True)
                 return True

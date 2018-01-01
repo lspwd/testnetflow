@@ -1,6 +1,6 @@
 from CommandHelper import CommandHelper
 from SudoHelper import SudoHelper
-from base import SSHHelper
+from SSHHelper import SSHHelper
 
 
 class SSHServerHelper(SSHHelper):

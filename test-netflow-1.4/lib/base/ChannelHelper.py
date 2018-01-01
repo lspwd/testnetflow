@@ -1,7 +1,7 @@
 import time
 
 
-class ChannelHelper:
+class ChannelHelper(object):
 
     def __init__(self, ps1, channel, logger, cmd):
 

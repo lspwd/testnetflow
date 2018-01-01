@@ -21,5 +21,5 @@ class CommandHelper(ChannelHelper):
             buffer = self.__scan_buffer_end(self.ps1, self.chan, True)
             return buffer
 
-        except Exception as e:
-            raise NameError("Class ChannelHelper -- mainLogic method() exception: " +str(e))
+        except (RuntimeError, Exception) as e:
+            raise RuntimeError(e)
