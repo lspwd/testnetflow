@@ -14,13 +14,13 @@ class SSHClientHelper(SSHHelper):
             # Starting Client script on the remote machine..
             cmd = scriptname + " " + ip + " " + port + " " + timeout
             stdin, stdout, stderr = client.exec_command(cmd)
-            if stderr:
-                result = stderr.read().strip("\n")
+            result = stderr.read().strip("\n")
+            # print("Peek client stderr result: " + result )
+            if result:
                 pattern = ".+(the remote endpoint).+"
                 find = re.compile(pattern)
                 match = find.match(result)
                 if match is None:
-                    print("In the client: " + str(result) )
                     raise RuntimeError("Exception while testing the remote endpoint")
 
                 else:
@@ -29,8 +29,9 @@ class SSHClientHelper(SSHHelper):
                               % (ip, port))
                     self.logger.debug("%s unable to connect to the remote server \"%s:%s\" ", self.tid, ip, port)
                     return False
-            elif stdout:
+            else:
                 result = stdout.read().strip("\n")
+                # print("Peek client stdout result: " + result)
                 if result.endswith("has been tested successfully!"):
                     if self.userargs:
                         print("DEBUG STDOUT: " + self.tid + " successful connection to server \"%s:%s\" "
@@ -43,10 +44,3 @@ class SSHClientHelper(SSHHelper):
         except Exception as e:
             self.logger.error("runClientSocketScript() :" + str(e))
             raise RuntimeError("runClientSocketScript() : " + str(e))
-
-        finally:
-            try:
-                if hasattr(client, "close"):
-                    client.close()
-            except NameError:
-                pass

@@ -15,8 +15,6 @@ class Server(NetBaseObject):
                                  "scripts" + os.path.sep + "SocketServer.py"
         self.script = os.path.basename(self.script_local_path)
 
-    # TODO Refactor in order to adopt new logic...
-
     def run(self):
 
         try:
