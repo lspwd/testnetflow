@@ -9,7 +9,8 @@ class Client(NetBaseObject):
     def __init__(self, dct, logger, queue, exception_queue, name, mutex, userargs):
         super(Client, self).__init__(dct, logger, exception_queue, name, mutex, userargs)
         self.queue = queue
-        self.script_local_path = os.getcwd() + os.path.sep + "scripts" + os.path.sep + "SocketClient.py"
+        self.script_local_path = os.getcwd() + os.path.sep + "lib" + os.path.sep + \
+                                 "scripts" + os.path.sep + "SocketClient.py"
         self.script = os.path.basename(self.script_local_path)
 
     def getClientIp(self, ipserver, sshclient):

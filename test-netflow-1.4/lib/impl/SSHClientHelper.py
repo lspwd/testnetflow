@@ -20,7 +20,9 @@ class SSHClientHelper(SSHHelper):
                 find = re.compile(pattern)
                 match = find.match(result)
                 if match is None:
+                    print("In the client: " + str(result) )
                     raise RuntimeError("Exception while testing the remote endpoint")
+
                 else:
                     if self.userargs:
                         print("DEBUG STDOUT: " + self.tid + " unable to connect to the remote server \"%s:%s\" "
@@ -39,8 +41,8 @@ class SSHClientHelper(SSHHelper):
                     raise RuntimeError("Exception while testing the remote endpoint")
 
         except Exception as e:
-            self.logger.error("runServerSocketScript() Exeception : %s" + str(e))
-            raise RuntimeError("runServerSocketScript() Exeception: " + str(e))
+            self.logger.error("runClientSocketScript() :" + str(e))
+            raise RuntimeError("runClientSocketScript() : " + str(e))
 
         finally:
             try:

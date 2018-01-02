@@ -9,10 +9,10 @@ import os
 
 
 class Server(NetBaseObject):
-
-    def __init__(self, dct, logger, exception_queue, tid,  mutex, userargs):
-        super(Server, self).__init__(dct, logger, exception_queue, tid,  mutex, userargs)
-        self.script_local_path = os.getcwd() + os.path.sep + "scripts" + os.path.sep + "SocketServer.py"
+    def __init__(self, dct, logger, exception_queue, tid, mutex, userargs):
+        super(Server, self).__init__(dct, logger, exception_queue, tid, mutex, userargs)
+        self.script_local_path = os.getcwd() + os.path.sep + "lib" + os.path.sep + \
+                                 "scripts" + os.path.sep + "SocketServer.py"
         self.script = os.path.basename(self.script_local_path)
 
     # TODO Refactor in order to adopt new logic...
@@ -36,7 +36,7 @@ class Server(NetBaseObject):
                     if self.userargs.stdout:
                         print("DEBUG STDOUT: " + self.tid + " Going to spawn socket \"%s:%s\" " % (ip, port))
                         self.logger.debug("%s Going to spawn socket \"%s:%s\"", self.tid, ip, port)
-                        helper.runSocketServer(ip, port, "60", client, full_script_path)
+                        helper.runSocketServer(ip, port, "20", client, full_script_path)
                 else:
                     if self.userargs.stdout:
                         print("DEBUG STDOUT: " + self.tid + " Socket \"%s:%s\" is already in LISTEN "

@@ -1,6 +1,7 @@
 from CommandHelper import CommandHelper
 from SudoHelper import SudoHelper
 from SSHHelper import SSHHelper
+from SudoNotFoundError import SudoNotFoundError
 
 
 class SSHServerHelper(SSHHelper):
@@ -18,15 +19,20 @@ class SSHServerHelper(SSHHelper):
 
         if int(port) <= 1024:
 
-            cmd = "sudo -k -b nohup " + scriptname + ip + " " + port + " " + timeout + " >/dev/null " + "\n"
+            if not self.checkSudo(chan):
+                raise SudoNotFoundError("The username " + self.username
+                                        + "is not able to do sudo on the remote machine")
+
+            cmd = "sudo -k -b nohup " + scriptname + " " + ip + " " + port + " " + timeout + " >/dev/null " + "\n"
+            # print("Sudo --> Executing on the remote machine: " + cmd)
             sudohelper = SudoHelper(custom_ps1, self.username, self.password, chan, self.logger, cmd)
             try:
-                sudohelper.doSudo()
+                sudohelper.doSudo(cmd)
                 if not self.testListenState(ip, port, client):
-                    self.logger.error("runServerSocketScript() Exeception: unable to bring up the Socket Server "
+                    self.logger.error("runServerSocketScript(): unable to bring up the Socket Server "
                                       "( hint: check the SudoHelper.doSudo() ) ")
                     chan.close()
-                    raise NameError("runServerSocketScript() Exeception: unable to bring up the Socket Server "
+                    raise NameError("runServerSocketScript():  unable to bring up the Socket Server "
                                     "( hint: check the SudoHelper.doSudo()")
 
                 if self.userargs.stdout:
@@ -34,8 +40,8 @@ class SSHServerHelper(SSHHelper):
                           % (ip, port))
                 self.logger.debug("%s SocketServer has been started on on \"%s:%s\" ", self.tid, ip, port)
             except Exception as e:
-                self.logger.error("runServerSocketScript() Exeception : %s" + str(e))
-                raise NameError("runServerSocketScript() Exeception: " + str(e))
+                self.logger.error("runServerSocketScript() " + str(e))
+                raise RuntimeError("runServerSocketScript() " + str(e))
             finally:
                 try:
                     if hasattr(chan, "close"):
@@ -46,7 +52,8 @@ class SSHServerHelper(SSHHelper):
         else:
             try:
                 # Starting Server via nohup on the remote machine..
-                cmd = "nohup " + scriptname + ip + " " + port + " " + timeout + " >/dev/null 2>&1 &\n"
+                cmd = "nohup " + scriptname + " " + ip + " " + port + " " + timeout + " >/dev/null 2>&1 &\n"
+                # print("Executing on the remote machine: " + cmd)
                 channelhelper = CommandHelper(custom_ps1, chan, self.logger, cmd)
                 channelhelper.executeCommand()
                 # Testing the LISTEN state of the socket
@@ -63,8 +70,8 @@ class SSHServerHelper(SSHHelper):
                 self.logger.debug("%s SocketServer has been started on \"%s:%s\" ", self.tid, ip, port)
 
             except Exception as e:
-                self.logger.error("runServerSocketScript() Exeception : %s" + str(e))
-                raise RuntimeError("runServerSocketScript() Exeception: " + str(e))
+                self.logger.error("runServerSocketScript() " + str(e))
+                raise RuntimeError("runServerSocketScript() " + str(e))
 
             finally:
                 try:

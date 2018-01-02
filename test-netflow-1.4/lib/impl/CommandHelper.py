@@ -1,5 +1,4 @@
-import ChannelHelper
-
+from ChannelHelper import ChannelHelper
 
 class CommandHelper(ChannelHelper):
 
@@ -9,17 +8,19 @@ class CommandHelper(ChannelHelper):
     def executeCommand(self):
         try:
             # Set custom PS1 on the remote machine"
-            self.__send_ssh_events(self.ps1, self.chan)
+            self.send_ssh_events("PS1=\"" + self.ps1 + "\"; export PS1\n", self.chan)
 
             # Wait for prompt
-            self.__scan_buffer_end(self.ps1, self.chan, False)
+            self.scan_buffer_end(self.ps1, self.chan, False)
 
             # Send the actual unix command
-            self.__send_ssh_events(self.cmd, self.chan)
+            self.send_ssh_events(self.cmd, self.chan)
 
             # Receive the response of the command
-            buffer = self.__scan_buffer_end(self.ps1, self.chan, True)
+            print("starting receiving buffer...")
+            buffer = self.scan_buffer_end(self.ps1, self.chan, True)
             return buffer
 
         except (RuntimeError, Exception) as e:
+            print("In the commandhelper class: " +str(e))
             raise RuntimeError(e)

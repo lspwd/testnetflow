@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 import paramiko
 
@@ -7,8 +6,8 @@ from FileNotFoundError import FileNotFoundError
 from PythonNotFoundError import PythonNotFoundError
 from SudoHelper import SudoHelper
 
-
 class SSHHelper(object):
+
     def __init__(self, ip, username, password, mutex, userargs, tid, logger):
         self.ip = ip
         self.username = username
@@ -19,6 +18,7 @@ class SSHHelper(object):
         self.logger = logger
         self.uploaded = False
         self.default_she_bang = "#!/usr/bin/python"
+        self.sudoAble = False
 
     def sshConnect(self):
         try:
@@ -27,17 +27,20 @@ class SSHHelper(object):
             client.load_system_host_keys()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             if self.userargs.stdout:
-                print ("DEBUG STDOUT: " + self.tid + " Username: \"%s\", Password: \"%s\" and ip address: \"%s\"" %
-                       self.username, self.password, self.ip)
-            self.logger.debug('%s - Server class - __sshConnect(): Connecting with Username: \"%s\",'
-                              ' Password \"%s\" and ip \"%s\"',
+                print ("DEBUG STDOUT: " + self.tid + " Connecting with Username: "
+                       + self.username + " Password: " + self.password + " Ip address " + self.ip)
+
+            self.logger.debug("%s sshConnect(): connecting with "
+                              "Username: \"%s\""
+                              "Password: \"%s\""
+                              "Ip: \"%s\"",
                               self.tid, self.username, self.password, self.ip)
             client.connect(self.ip, username=self.username, password=self.password, timeout=2,
                            allow_agent=False, look_for_keys=False)
             return client
 
         except  Exception as e:
-            raise NameError("Error in __sshConnect() method --- on server: " + self.ip + " " + str(e))
+            raise RuntimeError("sshConnect() exception processing " + self.ip + " " + str(e))
 
         finally:
             self.mutex.release()
@@ -55,14 +58,14 @@ class SSHHelper(object):
 
         if not result:
             if self.userargs.stdout:
-                print("DEBUG STDOUT: " + str(datetime.now())[:-3] + " --- " + self.tid
-                      + " KO \"%s:%s\" socket has not been found in LISTEN state" % (ip, port))
+                print("DEBUG STDOUT: " + self.tid
+                      + " \"%s:%s\" socket has not been found in LISTEN state" % (ip, port))
             self.logger.debug('%s \"%s:%s\" socket has not been found in LISTEN state', self.tid,
                               ip, port)
             return False
         else:
             if self.userargs.stdout:
-                print("DEBUG STDOUT: " + str(datetime.now())[:-3] + " --- " + self.tid
+                print("DEBUG STDOUT: " + self.tid
                       + " %s:%s socket has been found in LISTEN state" % (ip, port))
             self.logger.debug('OK %s \"%s:%s\" socket has been found in LISTEN state', self.tid, ip, port)
             return True
@@ -71,7 +74,7 @@ class SSHHelper(object):
         cmd = "which python"
         stdin, stdout, stderr = client.exec_command(cmd)
         if stdout:
-            return stdout.read.rstrip("\n")
+            return stdout.read().rstrip("\n")
         else:
             raise PythonNotFoundError("Python was not found on the remote machine $PATH")
 
@@ -91,31 +94,39 @@ class SSHHelper(object):
     def checkTheSheBang(self, python_she_bang):
         return python_she_bang == self.default_she_bang
 
-    # TODO ---------- to be implemented
-    def sedTheSheBang(self, client, python_she_bang, target_script ):
+    def sedTheSheBang(self, client, python_she_bang, target_script):
         try:
             if not self.checkTheSheBang(python_she_bang):
-                cmd = "sed -i 's@#!/usr/bin/python@" +python_she_bang + "@g' " + target_script
+                cmd = "sed -i 's@#!/usr/bin/python@" + python_she_bang + "@g' " + target_script
                 stdin, stdout, stderr = client.exec_command(cmd)
                 if stderr:
                     raise RuntimeError("Unable to sed the shebang on the remote machine")
         except Exception as e:
             raise RuntimeError("Unable to sed the shebang on the remote machine: " + str(e))
 
-    def checkSudo(self, client):
+    def checkSudo(self, chan):
         try:
-            chan = client.invoke_shell()
-            chan.set_combine_stderr(True)
-            chan.settimeout(20)
             custom_ps1 = "end1> "
-            helper = SudoHelper(custom_ps1, self.username, self.password, chan, self.logger, "sudo -k echo test")
-            response = helper.doSudo().replace("\r", "").split("\n")
-            return "test" in response
+            cmd = "sudo -k echo test\n"
+            helper = SudoHelper(custom_ps1, self.username, self.password, chan, self.logger, cmd)
+            response = helper.doSudo(cmd).replace("\r", "").split("\n")
+            if "test" in response:
+                self.setSudoAble(True)
+                return True
+            else:
+                self.setSudoAble(False)
+                return False
         except Exception as e:
             raise e
 
     def isUploaded(self):
         return self.uploaded
+
+    def isSudoAble(self):
+        return self.sudoAble
+
+    def setSudoAble(self, condition):
+        self.SudoAble = condition
 
     def upload(self, client, script_local_path, script, remote_path):
         if os.path.isfile(script_local_path):
@@ -127,7 +138,7 @@ class SSHHelper(object):
             else:
                 raise RuntimeError("Unable to upload " + script + "on the remote machine")
         else:
-            raise FileNotFoundError("The script " + script + "was not found on the local machine")
+            raise FileNotFoundError("The script " + script_local_path + " was not found on the local machine")
 
     def chmodOnScript(self, client, permissionBit, script):
         cmd = "chmod +" + permissionBit + " " + script

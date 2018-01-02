@@ -89,9 +89,9 @@ class ConfigLogic:
                         lst.append(server)
 
                 except Exception as e:
-                    raise NameError( "Exception in __internalLogicServer method!" + str(e))
+                    raise RuntimeError("Exception in __internalLogicServer method!" + str(e))
 
-                # print "Dizionario al termine del loop -> " +str(server)
+                    # print "Dizionario al termine del loop -> " +str(server)
             else:
                 continue
 
@@ -176,9 +176,9 @@ class ConfigLogic:
                             lst.append(server)
 
                 except Exception as e:
-                    raise NameError("Exception in __internalLogicLoadBalancer method! " + str(e))
+                    raise RuntimeError("Exception in __internalLogicLoadBalancer method! " + str(e))
 
-                # print "Lista in uscita! -->" +str(lst)
+                    # print "Lista in uscita! -->" +str(lst)
             else:
                 continue
 
@@ -222,7 +222,6 @@ class ConfigLogic:
         return client
 
     def internalLogicP2p(self, dct):
-
         p2plist = []
         p2plist = dct["p2phostlist"].split(" ")
         self.__normalizeList(p2plist)
@@ -234,10 +233,10 @@ class ConfigLogic:
             clientdct = {}
             p2pserver = []
 
-            #			print "In Entrata Nel Main CFG Logic - con Indice: ->" +str(idx)
-            #			print "self.client_final_list: ->" +str(clientlist)
-            #			print "self.serverlist: ->" +str(clientlist)
-            #
+            # print "In Entrata Nel Main CFG Logic - con Indice: ->" +str(idx)
+            # print "self.client_final_list: ->" +str(clientlist)
+            # print "self.serverlist: ->" +str(clientlist)
+
             clientdct = self.__internalLogicClient(configlist[idx])
 
             self.__internalLogicServer(configlist[idx], serverlist)
@@ -252,5 +251,4 @@ class ConfigLogic:
 
             clientlist.append(clientdct)
 
-
-        # print "In Uscita dal Main CFG Logic - con Indice: ->" +str(idx)
+            # print "In Uscita dal Main CFG Logic - con Indice: ->" +str(idx)
