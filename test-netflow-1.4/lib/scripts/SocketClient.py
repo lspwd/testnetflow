@@ -49,10 +49,33 @@ class SocketClient:
             except NameError:
                 pass
 
+    def connectP2p(self):
+        client = None
+        try:
+            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client.settimeout(self.conntimeout)
+            client.connect((self.address, self.dstport))
+
+        except socket.timeout as e1:
+            raise TimeoutError(e1)
+
+        except socket.error as e2:
+            raise SocketError(e2)
+
+        except Exception as ex:
+            raise RuntimeError(ex)
+
+        finally:
+            try:
+                if hasattr(client, "close"):
+                    client.close()
+            except NameError:
+                pass
 
 if __name__ == '__main__':
 
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
+        # TODO print usage
         print(len(sys.argv))
         print(sys.argv[0])
         sys.exit(1)
@@ -60,17 +83,32 @@ if __name__ == '__main__':
     ip = sys.argv[1]
     port = sys.argv[2]
     timeout = sys.argv[3]
+    deployed = (sys.argv[4])
+
+    if deployed == "False":
+        deployed = False
 
     socketClient = SocketClient(ip, port, timeout)
-    request = str(uuid.uuid4())
-    try:
-        # print(request)
-        response = socketClient.connect(str(request))
-        # print(response)
-        if request == response:
+
+    if deployed :
+        request = str(uuid.uuid4())
+        try:
+            # print(request)
+            response = socketClient.connect(str(request))
+            # print(response)
+            if request == response:
+                print("The Connection to " + ip + ":" + port + " has been tested successfully!")
+            else:
+                print("ERROR: The received payload from the remote endpoint is different " + ip, file=sys.stderr)
+        except (SocketError, TimeoutError, RuntimeError) as e:
+            print("ERROR: Exception caught while connecting to the remote endpoint "
+                  + ip + " --- " + str(e), file=sys.stderr)
+    else:
+        try:
+            # print(request)
+            socketClient.connectP2p()
+            # print(response)
             print("The Connection to " + ip + ":" + port + " has been tested successfully!")
-        else:
-            print("ERROR: The received payload from the remote endpoint is different " + ip, file=sys.stderr)
-    except (SocketError, TimeoutError, RuntimeError) as e:
-        print("ERROR: Exception caught while connecting to the remote endpoint "
-              + ip + " --- " + str(e), file=sys.stderr)
+        except (SocketError, TimeoutError, RuntimeError) as e:
+            print("ERROR: Exception caught while connecting to the remote endpoint "
+                  + ip + " --- " + str(e), file=sys.stderr)

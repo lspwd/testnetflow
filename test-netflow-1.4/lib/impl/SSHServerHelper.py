@@ -22,7 +22,6 @@ class SSHServerHelper(SSHHelper):
             if not self.checkSudo(chan):
                 raise SudoNotFoundError("The username " + self.username
                                         + "is not able to do sudo on the remote machine")
-
             cmd = "sudo -k -b nohup " + scriptname + " " + ip + " " + port + " " + timeout + " >/dev/null " + "\n"
             # print("Sudo --> Executing on the remote machine: " + cmd)
             sudohelper = SudoHelper(custom_ps1, self.username, self.password, chan, self.logger, cmd)

@@ -59,6 +59,7 @@ if __name__ == '__main__':
     configurator = Configurator(configfile, logger)
     lst = configurator.get_config()
     client_data_list = []
+    server_result_list = []
     client_result_list = []
     server_data_list = []
     client_thread_list = []
@@ -109,21 +110,23 @@ if __name__ == '__main__':
         count += 1
 
     for s in server_thread_list:
-        exc = server_exeception_queue.get()
-        if type(exc) is not str:
-            exc_type, exc_obj, exc_trace = exc
+        serverResponseList = server_exeception_queue.get()
+        if type(serverResponseList) is not list:
+            exc_type, exc_obj, exc_trace = serverResponseList
             logger.error("Thread-0(Main) -- Exception from Server class " + str(exc_obj))
             if userargs.stdout:
                 print("DEBUG STDOUT: Thread-0 (Main) -- Exception from Server class " + str(exc_obj))
                 # print exc_type, exc_obj
                 # print exc_trace
+        else:
+            server_result_list.append(serverResponseList)
         s.join()
 
     for i in range(len(client_data_list)):
         name = "Thread-" + str(count)
         client_thread = Client(client_data_list[i], logger, queue,
                                client_exeception_queue, name,
-                               clientmutex, userargs)
+                               clientmutex, userargs, server_result_list)
         client_thread.start()
         client_thread_list.append(client_thread)
         count += 1

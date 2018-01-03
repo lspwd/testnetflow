@@ -9,11 +9,13 @@ import os
 
 
 class Server(NetBaseObject):
+
     def __init__(self, dct, logger, exception_queue, tid, mutex, userargs):
         super(Server, self).__init__(dct, logger, exception_queue, tid, mutex, userargs)
         self.script_local_path = os.getcwd() + os.path.sep + "lib" + os.path.sep + \
                                  "scripts" + os.path.sep + "SocketServer.py"
         self.script = os.path.basename(self.script_local_path)
+        self.responseList = []
 
     def run(self):
 
@@ -27,7 +29,6 @@ class Server(NetBaseObject):
 
             client = self.prepareTheGround(helper, self.script_local_path, self.script, self.remote_path)
             for i in self.socketlist:
-
                 ip = i.split(":")[0]
                 port = i.split(":")[1]
                 if not helper.testListenState(ip, port, client):
@@ -35,13 +36,15 @@ class Server(NetBaseObject):
                         print("DEBUG STDOUT: " + self.tid + " Going to spawn socket \"%s:%s\" " % (ip, port))
                         self.logger.debug("%s Going to spawn socket \"%s:%s\"", self.tid, ip, port)
                         helper.runSocketServer(ip, port, "20", client, full_script_path)
+                        self.responseList.append({"socket" : i, "deployed": True})
                 else:
                     if self.userargs.stdout:
                         print("DEBUG STDOUT: " + self.tid + " Socket \"%s:%s\" is already in LISTEN "
                                                             "state on the remote server" % (ip, port))
                     self.logger.debug("%s Socket \"%s:%s\" is already in LISTEN"
                                       "state on the remote server", self.tid, ip, port)
-            self.exception_queue.put("done")
+                    self.responseList.append({"socket": i, "deployed": False})
+            self.exception_queue.put(self.responseList)
             return
         except  (RuntimeError, Exception):
             self.exception_queue.put(sys.exc_info())

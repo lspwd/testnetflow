@@ -8,11 +8,11 @@ class SSHClientHelper(SSHHelper):
 
     # working on upload here
 
-    def runSocketClient(self, ip, port, timeout, client, scriptname):
+    def runSocketClient(self, ip, port, timeout, client, scriptname, deployed):
 
         try:
             # Starting Client script on the remote machine..
-            cmd = scriptname + " " + ip + " " + port + " " + timeout
+            cmd = scriptname + " " + ip + " " + port + " " + timeout + " " + str(deployed)
             stdin, stdout, stderr = client.exec_command(cmd)
             result = stderr.read().strip("\n")
             # print("Peek client stderr result: " + result )
