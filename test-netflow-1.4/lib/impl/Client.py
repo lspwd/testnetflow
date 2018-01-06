@@ -34,6 +34,7 @@ class Client(NetBaseObject):
     def run(self):
         ipprodclient_list = []
         ipprodclient_dct = {}
+        deployed = False
         full_script_path = self.remote_path + self.script
         try:
             helper = SSHClientHelper(self.mgmtip, self.username,
@@ -41,28 +42,30 @@ class Client(NetBaseObject):
                                      self.tid, self.logger)
             client = self.prepareTheGround(helper, self.script_local_path, self.script, self.remote_path)
             for i in self.socketlist:
-                full_socket = i["address"] + ":" + i["port"]
-                # print("Is under load balancer? " + str(i["under_load_balancer"]))
+
                 if i["under_load_balancer"]:
-                    # print("entering in load balancer logic....")
                     if not i["load_balancer_address"]:
                         raise ConfiguationError("Empty load balancer address property for server "
                                                 + i["address"] + ":" + i["port"])
                     ip = i["load_balancer_address"].split(":")[0]
                     port = i["load_balancer_address"].split(":")[1]
+                    full_socket = ip + ":" + port
                     deployed = False
                 else:
+                    ip = i["address"]
+                    port = i["port"]
+                    full_socket = i["address"] + ":" + i["port"]
+
                     for serverResult in self.serverResultList:
                         if serverResult["socket"] == full_socket:
                             deployed = serverResult["deployed"]
 
                     # print("Was the socket " + full_socket + " deployed by me? " + str(deployed))
-                    ip = i["address"]
-                    port = i["port"]
 
                 if deployed:
                     result = helper.runSocketClient(ip, port, "3", client, full_script_path, True)
                 else:
+                    print("full_socket here -> " + full_socket)
                     result = helper.runSocketClient(ip, port, "3", client, full_script_path, False)
                 if result:
                     ipprodclient_list.append((full_socket, True))
