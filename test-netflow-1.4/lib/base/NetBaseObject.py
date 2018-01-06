@@ -1,18 +1,17 @@
 import threading
 from PythonNotFoundError import PythonNotFoundError
 
+
 class NetBaseObject(threading.Thread):
     # server[mgmtip],server[username],server[password],server[socket]
 
-    def __init__(self, dct, logger, exception_queue, tid, mutex, userargs):
+    def __init__(self, username, password, mgmtip, attribute_list, logger, exception_queue,
+                 tid, mutex, userargs):
         super(NetBaseObject, self).__init__()
-        self.mgmtip = dct["mgmtip"]
-        # print "self.mgmtipclient: " +self.mgmtipclient
-        self.username = dct["username"]
-        # print "self.username: " +self.username
-        self.password = dct["password"]
-        # print "self.password: " +str(self.password)
-        self.socketlist  = dct["socket"]
+        self.mgmtip = mgmtip
+        self.username = username
+        self.password = password
+        self.socketlist = attribute_list
         self.logger = logger
         self.tid = tid
         self.mutex = mutex

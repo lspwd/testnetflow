@@ -3,9 +3,8 @@
 #############################################################
 # Antica Innesteria Dippolitoni presents:
 #
-# Test NetFlows oO Threaded 1.4
+# Test NetFlows oO Threaded 2.0
 #############################################################
-
 
 import Queue
 import argparse
@@ -16,7 +15,6 @@ import os
 from Server import Server
 from Client import Client
 from AnalyzeData import AnalyzeData
-from ConfigLogic import ConfigLogic
 from Configurator import Configurator
 from Log import Log
 
@@ -26,22 +24,15 @@ from Log import Log
 if __name__ == '__main__':
 
     date_format = time.strftime("%d-%b-%Y")
-    # "test-netflow-" + date_format + ".log"
     logname = os.getcwd() + os.sep + "log" + os.sep + "TestNetflow.log"
-    # "test-netflow-" + date_format +".paramiko" +".log
     paramiko_logname = os.getcwd() + os.sep + "log" + os.sep + "TestNetflow.paramiko.log"
 
-    # parser = argparse.ArgumentParser()
     parser = argparse.ArgumentParser(prog='TestNetflow.py',
                                      formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=30))
     parser.add_argument("-d", "--debug", help="turn on debug log level", action="store_true")
     parser.add_argument("-s", "--stdout", help="Output Debug actions on stdout", action="store_true")
-    parser.add_argument("-n", "--netcat",
-                        help="option to specify an alternate nc (netcat) binary path, "
-                             "once omitted program will try to use \"nc\" in $PATH ",
-                        default="nc", metavar="nc")
     parser.add_argument("-v", "--version", help="Display the version of the program", action="version",
-                        version="Antica Innesteria Dippolitoni presents: %(prog)s 1.0")
+                        version="Antica Innesteria Dippolitoni presents: %(prog)s 2.0")
     userargs = parser.parse_args()
 
     level = "INFO"
@@ -52,80 +43,85 @@ if __name__ == '__main__':
     paramikolog = Log(paramiko_logname, level, "paramiko")
     logger = log.create_log()
     paramikologger = paramikolog.create_log()
-
-    # paramiko.util.log_to_file(paramiko_log)
-
-    configfile = os.getcwd() + os.path.sep + "properties" + os.path.sep + "config.properties"
+    configfile = os.getcwd() + os.path.sep + "properties" + os.path.sep + "config.yml"
     configurator = Configurator(configfile, logger)
-    lst = configurator.get_config()
-    client_data_list = []
+    config_list = configurator.get_config()
+
+    client_list = []
+    server_list = []
+
     server_result_list = []
     client_result_list = []
-    server_data_list = []
+
     client_thread_list = []
     server_thread_list = []
-    close_thread_list = []
     analyze_thread_list = []
 
     queue = Queue.Queue()
     server_exeception_queue = Queue.Queue()
     client_exeception_queue = Queue.Queue()
-    closehelper_exception_queue = Queue.Queue()
     analyze_exception_queue = Queue.Queue()
-
-    configlogic = ConfigLogic(server_data_list, client_data_list)
-    configlogic.mainLogic(lst, server_data_list, client_data_list)
 
     print "*" * 80
     print('\n%s\n%s\n%s\n' % ('Welcome to Network Flow Testing Tool', 'Please wait for program completion',
                               'or look for details at the log file ' + logname))
     print "*" * 80
 
-    # Trace
-    # print "client_data_list: -> " +str(client_data_list)
-    # print "server_data_list: -> " +str(client_data_list)
-    # print "*"*80
-    # print "Client!"
-    # for idx,value in enumerate(client_data_list):
-    # print idx, value
-    # print "*"*80
-    # print "*"*80
-    # print "Server!"
-    # for idx,value in enumerate(server_data_list):
-    # print idx, value
-    # print "*"*80
-
     servermutex = threading.Lock()
     clientmutex = threading.Lock()
-    closemutex = threading.Lock()
 
     count = 1
-    for i in range(len(server_data_list)):
+
+    [map(lambda pos: server_list.append(config_list[index]["client"]["server_list_to_test"][pos]),
+         range(len(config_list[index]["client"]["server_list_to_test"]))) for index in range(len(config_list))]
+
+    for position, server in enumerate(server_list):
         name = "Thread-" + str(count)
-        server_thread = Server(server_data_list[i], logger,
+        if not server_list[position]["try_to_spawn_socket_on_remote_server"]:
+            map(lambda socket: server_result_list.append(
+                {"socket": socket["address"] + ":" + socket["port"], "deployed": False}),
+                server_list[position]["socket_to_test"])
+            continue
+
+        server_thread = Server(server_list[position]["ssh_server_username"],
+                               server_list[position]["ssh_server_password"],
+                               server_list[position]["ssh_server_ip_address"],
+                               server_list[position]["socket_to_test"],
+                               logger,
                                server_exeception_queue,
-                               name, servermutex, userargs)
+                               name, servermutex, userargs, server_result_list)
         server_thread.start()
         server_thread_list.append(server_thread)
         count += 1
 
     for s in server_thread_list:
-        serverResponseList = server_exeception_queue.get()
-        if type(serverResponseList) is not list:
-            exc_type, exc_obj, exc_trace = serverResponseList
+        server_result_list = server_exeception_queue.get()
+        if type(server_result_list) is not list:
+            exc_type, exc_obj, exc_trace = server_result_list
             logger.error("Thread-0(Main) -- Exception from Server class " + str(exc_obj))
             if userargs.stdout:
-                print("DEBUG STDOUT: Thread-0 (Main) -- Exception from Server class " + str(exc_obj))
+                print("DEBUG STDOUT: Thread-0(Main) -- Exception from Server class " + str(exc_obj))
                 # print exc_type, exc_obj
                 # print exc_trace
-        else:
-            server_result_list.append(serverResponseList)
+        # else:
+            # print("server_result_list: ")
+            # server_result_list.append(serverResponseList)
+
         s.join()
 
-    for i in range(len(client_data_list)):
+    for i in range(len(config_list)):
         name = "Thread-" + str(count)
-        client_thread = Client(client_data_list[i], logger, queue,
-                               client_exeception_queue, name,
+
+        [map(lambda x: client_list.append(x), config_list[i]["client"]["server_list_to_test"][idx]["socket_to_test"])
+         for idx in range(len(config_list[i]["client"]["server_list_to_test"]))]
+
+        client_thread = Client(config_list[i]["client"]["ssh_client_username"],
+                               config_list[i]["client"]["ssh_client_password"],
+                               config_list[i]["client"]["ssh_client_ip_address"],
+                               client_list,
+                               logger, queue,
+                               client_exeception_queue,
+                               name,
                                clientmutex, userargs, server_result_list)
         client_thread.start()
         client_thread_list.append(client_thread)
@@ -141,7 +137,6 @@ if __name__ == '__main__':
                 # print exc_type, exc_obj
                 # print exc_trace
         response = queue.get()
-        # if type(response) is dict:
         client_result_list.append(response)
         c.join()
 

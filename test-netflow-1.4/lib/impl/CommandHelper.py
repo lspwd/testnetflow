@@ -17,10 +17,10 @@ class CommandHelper(ChannelHelper):
             self.send_ssh_events(self.cmd, self.chan)
 
             # Receive the response of the command
-            print("starting receiving buffer...")
+            # print("starting receiving buffer...")
             buffer = self.scan_buffer_end(self.ps1, self.chan, True)
             return buffer
 
         except (RuntimeError, Exception) as e:
-            print("In the commandhelper class: " +str(e))
+            # print("In the commandhelper class: " +str(e))
             raise RuntimeError(e)

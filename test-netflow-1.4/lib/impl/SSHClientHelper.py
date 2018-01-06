@@ -12,10 +12,11 @@ class SSHClientHelper(SSHHelper):
 
         try:
             # Starting Client script on the remote machine..
+
             cmd = scriptname + " " + ip + " " + port + " " + timeout + " " + str(deployed)
             stdin, stdout, stderr = client.exec_command(cmd)
             result = stderr.read().strip("\n")
-            # print("Peek client stderr result: " + result )
+            # print("Peek at client stderr result: " + result )
             if result:
                 pattern = ".+(the remote endpoint).+"
                 find = re.compile(pattern)
