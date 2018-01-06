@@ -65,7 +65,7 @@ class Client(NetBaseObject):
                 if deployed:
                     result = helper.runSocketClient(ip, port, "3", client, full_script_path, True)
                 else:
-                    print("full_socket here -> " + full_socket)
+                    # print("full_socket here -> " + full_socket)
                     result = helper.runSocketClient(ip, port, "3", client, full_script_path, False)
                 if result:
                     ipprodclient_list.append((full_socket, True))
