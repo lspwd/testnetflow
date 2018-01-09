@@ -34,7 +34,7 @@ if __name__ == '__main__':
                         help="socket client timeout (default: 3 sec)", default="3")
     parser.add_argument("-st", "--servertimeout", type=str,
                         help="socket client timeout (default: 20 sec)", default="20")
-    parser.add_argument("-s", "--stdout", help="Output Debug actions on stdout" , action="store_true")
+    parser.add_argument("-s", "--stdout", help="Output Debug actions on stdout", action="store_true")
     parser.add_argument("-v", "--version", help="Display the version of the program", action="version",
                         version="Antica Innesteria Dippolitoni presents: %(prog)s 2.0")
     userargs = parser.parse_args()
@@ -67,10 +67,10 @@ if __name__ == '__main__':
     client_exeception_queue = Queue.Queue()
     analyze_exception_queue = Queue.Queue()
 
-    print "*" * 80
+    print("*" * 80)
     print('\n%s\n%s\n%s\n' % ('Welcome to Network Flow Testing Tool', 'Please wait for program completion',
                               'or look for details at the log file ' + logname))
-    print "*" * 80
+    print("*" * 80)
 
     servermutex = threading.Lock()
     clientmutex = threading.Lock()
@@ -107,15 +107,13 @@ if __name__ == '__main__':
                 logger.error("Thread-0(Main) -- Exception from Server class " + str(exception))
                 if userargs.stdout:
                     print("DEBUG STDOUT: Thread-0(Main) -- Exception from Server class " + str(exception))
-                # print exc_type, exc_obj
-                # print exc_trace
+
         # else:
             # print("server_result_list: ")
             # server_result_list.append(serverResponseList)
 
-        server_result_list  = server_result_queue.get()
+        server_result_list = server_result_queue.get()
         s.join()
-        print("Lunghezza di server_result_list: " +str(len(server_result_list)))
 
     for i in range(len(config_list)):
         name = "Thread-" + str(count)
@@ -144,8 +142,7 @@ if __name__ == '__main__':
             logger.error("Thread-0(Main) -- Exception from Client class " + str(exc))
             if userargs.stdout:
                 print("DEBUG STDOUT: Thread-0 (Main) -- Exception from Client class " + str(exc))
-                # print exc_type, exc_obj
-                # print exc_trace
+
         response = client_result_queue.get()
         client_result_list.append(response)
         c.join()
@@ -164,8 +161,7 @@ if __name__ == '__main__':
             logger.error("Thread-0(Main) -- Exception from AnalyzeData class " + str(exc_obj))
             if userargs.stdout:
                 print("DEBUG STDOUT: Thread-0 (Main) -- Exception from AnalyzeData class " + str(exc_obj))
-                # print exc_type, exc_obj
-                # print exc_trace
+
         a.join()
 
     if userargs.stdout:

@@ -9,7 +9,7 @@
       ssh_server_password: Password2
       try_to_spawn_socket_on_remote_server: true
       socket_to_test:
-      - address: merda
+      - address: test-server
         port: "3128"
         under_load_balancer: false
         load_balancer_address:
