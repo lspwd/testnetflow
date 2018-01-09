@@ -1,12 +1,15 @@
 import threading
 from PythonNotFoundError import PythonNotFoundError
+import socket
+from   multiprocessing import Process, Queue
+import time
 
 
 class NetBaseObject(threading.Thread):
     # server[mgmtip],server[username],server[password],server[socket]
 
-    def __init__(self, username, password, mgmtip, attribute_list, logger, exception_queue,
-                 tid, mutex, userargs):
+    def __init__(self, username, password, mgmtip, attribute_list,
+                 logger, exception_queue, result_queue, tid, mutex, userargs):
         super(NetBaseObject, self).__init__()
         self.mgmtip = mgmtip
         self.username = username
@@ -16,10 +19,12 @@ class NetBaseObject(threading.Thread):
         self.tid = tid
         self.mutex = mutex
         self.exception_queue = exception_queue
+        self.result_queue = result_queue
         self.userargs = userargs
         self.python_min_version = "2.6"
         self.remote_path = "/tmp/"
         self.permission_bit = "x"
+        self.exception_list = []
 
     def prepareTheGround(self, helper, script_local_path, script_name, script_remote_path):
         try:
@@ -39,6 +44,44 @@ class NetBaseObject(threading.Thread):
                                           + self.python_min_version)
         except Exception as e:
             raise RuntimeError("An exception has been caught: " + str(e))
+
+    def dns_lookup(self, host, q):
+        try:
+            ret = socket.gethostbyname(host)
+            q.put(ret)
+        except (socket.gaierror, Exception):
+            pass
+
+    def resolveHostname(self, ip):
+        p = ""
+        try:
+            q = Queue()
+            p = Process(target=self.dns_lookup(ip, q))
+            p.start()
+            time.sleep(0.5)
+            if q.empty():
+                p.terminate()
+                raise RuntimeError("Unable to resolve hostname " + ip )
+            else:
+                ip = q.get(timeout=2)
+                p.terminate()
+                return ip
+
+        except (RuntimeError, socket.gaierror) as e:
+            raise RuntimeError("error in the resolveHostname --- " + str(e))
+
+        finally:
+            try:
+                if hasattr(p, "terminate"):
+                    p.terminate()
+            except NameError:
+                pass
+
+    def internalNameResolution(self,ip):
+        try:
+            return self.resolveHostname(ip)
+        except RuntimeError as e:
+            raise(e)
 
     def run(self):
         pass

@@ -25,7 +25,8 @@ class SSHClientHelper(SSHHelper):
                     raise RuntimeError("Exception while testing the remote endpoint")
 
                 else:
-                    if self.userargs:
+                    # print("Track self.usersargs.. " +str(self.userargs))
+                    if self.userargs.stdout:
                         print("DEBUG STDOUT: " + self.tid + " unable to connect to the remote server \"%s:%s\" "
                               % (ip, port))
                     self.logger.debug("%s unable to connect to the remote server \"%s:%s\" ", self.tid, ip, port)
@@ -34,7 +35,7 @@ class SSHClientHelper(SSHHelper):
                 result = stdout.read().strip("\n")
                 # print("Peek client stdout result: " + result)
                 if result.endswith("has been tested successfully!"):
-                    if self.userargs:
+                    if self.userargs.stdout:
                         print("DEBUG STDOUT: " + self.tid + " successful connection to server \"%s:%s\" "
                               % (ip, port))
                     self.logger.debug("%s successful connection to server \"%s:%s\" ", self.tid, ip, port)
@@ -43,5 +44,5 @@ class SSHClientHelper(SSHHelper):
                     raise RuntimeError("Exception while testing the remote endpoint")
 
         except Exception as e:
-            self.logger.error("runClientSocketScript() :" + str(e))
-            raise RuntimeError("runClientSocketScript() : " + str(e))
+            self.logger.error("SSHClientHelper() :" + str(e))
+            raise RuntimeError("SSHClientHelper() : " + str(e))

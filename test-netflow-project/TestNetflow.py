@@ -30,7 +30,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='TestNetflow.py',
                                      formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=30))
     parser.add_argument("-d", "--debug", help="turn on debug log level", action="store_true")
-    parser.add_argument("-s", "--stdout", help="Output Debug actions on stdout", action="store_true")
+    parser.add_argument("-ct", "--clienttimeout", type=str,
+                        help="socket client timeout (default: 3 sec)", default="3")
+    parser.add_argument("-st", "--servertimeout", type=str,
+                        help="socket client timeout (default: 20 sec)", default="20")
+    parser.add_argument("-s", "--stdout", help="Output Debug actions on stdout" , action="store_true")
     parser.add_argument("-v", "--version", help="Display the version of the program", action="version",
                         version="Antica Innesteria Dippolitoni presents: %(prog)s 2.0")
     userargs = parser.parse_args()
@@ -57,7 +61,8 @@ if __name__ == '__main__':
     server_thread_list = []
     analyze_thread_list = []
 
-    queue = Queue.Queue()
+    client_result_queue = Queue.Queue()
+    server_result_queue = Queue.Queue()
     server_exeception_queue = Queue.Queue()
     client_exeception_queue = Queue.Queue()
     analyze_exception_queue = Queue.Queue()
@@ -89,25 +94,28 @@ if __name__ == '__main__':
                                server_list[position]["socket_to_test"],
                                logger,
                                server_exeception_queue,
+                               server_result_queue,
                                name, servermutex, userargs, server_result_list)
         server_thread.start()
         server_thread_list.append(server_thread)
         count += 1
 
     for s in server_thread_list:
-        server_result_list = server_exeception_queue.get()
-        if type(server_result_list) is not list:
-            exc_type, exc_obj, exc_trace = server_result_list
-            logger.error("Thread-0(Main) -- Exception from Server class " + str(exc_obj))
-            if userargs.stdout:
-                print("DEBUG STDOUT: Thread-0(Main) -- Exception from Server class " + str(exc_obj))
+        exception_list = server_exeception_queue.get()
+        if type(exception_list) is not str:
+            for exception in exception_list:
+                logger.error("Thread-0(Main) -- Exception from Server class " + str(exception))
+                if userargs.stdout:
+                    print("DEBUG STDOUT: Thread-0(Main) -- Exception from Server class " + str(exception))
                 # print exc_type, exc_obj
                 # print exc_trace
         # else:
             # print("server_result_list: ")
             # server_result_list.append(serverResponseList)
 
+        server_result_list  = server_result_queue.get()
         s.join()
+        print("Lunghezza di server_result_list: " +str(len(server_result_list)))
 
     for i in range(len(config_list)):
         name = "Thread-" + str(count)
@@ -119,10 +127,13 @@ if __name__ == '__main__':
                                config_list[i]["client"]["ssh_client_password"],
                                config_list[i]["client"]["ssh_client_ip_address"],
                                client_list,
-                               logger, queue,
+                               logger,
                                client_exeception_queue,
+                               client_result_queue,
                                name,
-                               clientmutex, userargs, server_result_list)
+                               clientmutex,
+                               userargs,
+                               server_result_list)
         client_thread.start()
         client_thread_list.append(client_thread)
         count += 1
@@ -130,13 +141,12 @@ if __name__ == '__main__':
     for c in client_thread_list:
         exc = client_exeception_queue.get()
         if type(exc) is not str:
-            exc_type, exc_obj, exc_trace = exc
-            logger.error("Thread-0(Main) -- Exception from Client class " + str(exc_obj))
+            logger.error("Thread-0(Main) -- Exception from Client class " + str(exc))
             if userargs.stdout:
-                print("DEBUG STDOUT: Thread-0 (Main) -- Exception from Client class " + str(exc_obj))
+                print("DEBUG STDOUT: Thread-0 (Main) -- Exception from Client class " + str(exc))
                 # print exc_type, exc_obj
                 # print exc_trace
-        response = queue.get()
+        response = client_result_queue.get()
         client_result_list.append(response)
         c.join()
 
@@ -159,10 +169,10 @@ if __name__ == '__main__':
         a.join()
 
     if userargs.stdout:
-        print "*" * 80
+        print("*" * 80)
     print('\n%s\n%s\n%s\n' % (
         'Program has finished testing flows between clients and servers', 'Please review flows status report',
         'within the log file ' + logname))
-    print "*" * 80
+    print("*" * 80)
     #
     ###########################################################################
