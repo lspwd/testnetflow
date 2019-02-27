@@ -31,6 +31,8 @@ def main():
 
     parser = argparse.ArgumentParser(prog='TestNetflow.py',
                                      formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=30))
+    parser.add_argument("-c", "--cfg", help="use specified config file (default {})".format(configfile),
+                        default=configfile)
     parser.add_argument("-d", "--debug", help="turn on debug log level", action="store_true")
     parser.add_argument("-ct", "--clienttimeout", type=str,
                         help="socket client timeout (default: 3 sec)", default="3")
@@ -49,7 +51,7 @@ def main():
     paramikolog = Log(paramiko_logname, level, "paramiko")
     logger = log.create_log()
     paramikologger = paramikolog.create_log()
-    configurator = Configurator(configfile, logger)
+    configurator = Configurator(userargs.cfg, logger)
     config_list = configurator.get_config()
 
     client_list = []
