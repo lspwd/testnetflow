@@ -6,17 +6,17 @@
 # Test NetFlows oO Threaded 2.0
 #############################################################
 
-import Queue
 import argparse
+import os
+import Queue
 import threading
 import time
-import os
 
-from Server import Server
-from Client import Client
-from AnalyzeData import AnalyzeData
-from Configurator import Configurator
-from Log import Log
+from testnetflow.impl.Client import Client
+from testnetflow.impl.Server import Server
+from testnetflow.util.AnalyzeData import AnalyzeData
+from testnetflow.util.Configurator import Configurator
+from testnetflow.util.Log import Log
 
 ##############################################################
 

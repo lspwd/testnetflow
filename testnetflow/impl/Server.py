@@ -2,11 +2,12 @@
 
 from __future__ import print_function
 
-import sys
-from NetBaseObject import NetBaseObject
-from SSHServerHelper import SSHServerHelper
 import os
-from ConfigurationError import ConfiguationError
+import sys
+
+from testnetflow.base.NetBaseObject import NetBaseObject
+from testnetflow.exceptions.ConfigurationError import ConfiguationError
+from testnetflow.impl.SSHServerHelper import SSHServerHelper
 
 
 class Server(NetBaseObject):

@@ -1,4 +1,5 @@
 import sys
+
 import yaml
 from yaml import YAMLError
 

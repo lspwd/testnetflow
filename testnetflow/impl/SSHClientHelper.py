@@ -1,5 +1,6 @@
-from SSHHelper import SSHHelper
 import re
+
+from testnetflow.base.SSHHelper import SSHHelper
 
 
 class SSHClientHelper(SSHHelper):

@@ -2,9 +2,10 @@ import os
 
 import paramiko
 
-from FileNotFoundError import FileNotFoundError
-from PythonNotFoundError import PythonNotFoundError
-from SudoHelper import SudoHelper
+from testnetflow.exceptions.FileNotFoundError import FileNotFoundError
+from testnetflow.exceptions.PythonNotFoundError import PythonNotFoundError
+from testnetflow.impl.SudoHelper import SudoHelper
+
 
 class SSHHelper(object):
 

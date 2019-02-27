@@ -1,8 +1,9 @@
-import sys
 import os
+import sys
+
 from SSHClientHelper import SSHClientHelper
-from NetBaseObject import NetBaseObject
-from ConfigurationError import ConfiguationError
+from testnetflow.base.NetBaseObject import NetBaseObject
+from testnetflow.exceptions.ConfigurationError import ConfiguationError
 
 
 class Client(NetBaseObject):

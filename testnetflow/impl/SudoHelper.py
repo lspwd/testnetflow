@@ -1,4 +1,4 @@
-from ChannelHelper import ChannelHelper
+from testnetflow.base.ChannelHelper import ChannelHelper
 
 
 class SudoHelper(ChannelHelper):
