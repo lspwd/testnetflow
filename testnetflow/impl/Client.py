@@ -11,7 +11,7 @@ class Client(NetBaseObject):
         super(Client, self).__init__(username, password, mgmtip, attribute_list, logger,
                                      exception_queue, result_queue, name, mutex, userargs )
         self.result_queue = result_queue
-        self.script_local_path = os.getcwd() + os.path.sep + "lib" + os.path.sep \
+        self.script_local_path = os.getcwd() + os.path.sep + "testnetflow" + os.path.sep \
                                  + "scripts" + os.path.sep + "SocketClient.py"
         self.script = os.path.basename(self.script_local_path)
         self.serverResultList = server_result_list
