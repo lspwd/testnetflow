@@ -18,11 +18,11 @@ from testnetflow.util.AnalyzeData import AnalyzeData
 from testnetflow.util.Configurator import Configurator
 from testnetflow.util.Log import Log
 
+
 ##############################################################
 
 
-if __name__ == '__main__':
-
+def main():
     date_format = time.strftime("%d-%b-%Y")
     logname = os.getcwd() + os.sep + "log" + os.sep + "TestNetflow.log"
     paramiko_logname = os.getcwd() + os.sep + "log" + os.sep + "TestNetflow.paramiko.log"
@@ -172,3 +172,7 @@ if __name__ == '__main__':
     print("*" * 80)
     #
     ###########################################################################
+
+
+if __name__ == '__main__':
+    main()
