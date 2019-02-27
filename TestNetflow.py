@@ -22,26 +22,40 @@ from testnetflow.util.Log import Log
 ##############################################################
 
 
-def main():
-    date_format = time.strftime("%d-%b-%Y")
+def init_args():
+    """
+    Initialize command line arguments
+    :return: a parser for command line arguments
+    """
 
-    logname = os.path.join(os.getcwd(), "log", "TestNetflow.log")
-    paramiko_logname = os.path.join(os.getcwd(), "log", "TestNetflow.paramiko.log")
+    # Default values
     configfile = os.path.join(os.getcwd(), "properties", "config.yml")
+    ctimeout = "3"
+    stimeout = "20"
 
     parser = argparse.ArgumentParser(prog='TestNetflow.py',
                                      formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=30))
     parser.add_argument("-c", "--cfg", help="use specified config file (default {})".format(configfile),
                         default=configfile)
     parser.add_argument("-d", "--debug", help="turn on debug log level", action="store_true")
-    parser.add_argument("-ct", "--clienttimeout", type=str,
-                        help="socket client timeout (default: 3 sec)", default="3")
-    parser.add_argument("-st", "--servertimeout", type=str,
-                        help="socket client timeout (default: 20 sec)", default="20")
+    parser.add_argument("-ct", "--clienttimeout", help="socket client timeout (default: {} sec)".format(ctimeout),
+                        type=str, default=ctimeout)
+    parser.add_argument("-st", "--servertimeout", help="socket client timeout (default: {} sec)".format(stimeout),
+                        type=str, default=stimeout)
     parser.add_argument("-s", "--stdout", help="Output Debug actions on stdout", action="store_true")
     parser.add_argument("-v", "--version", help="Display the version of the program", action="version",
                         version="Antica Innesteria Dippolitoni presents: %(prog)s 2.0")
-    userargs = parser.parse_args()
+
+    return parser
+
+
+def main():
+    date_format = time.strftime("%d-%b-%Y")
+
+    logname = os.path.join(os.getcwd(), "log", "TestNetflow.log")
+    paramiko_logname = os.path.join(os.getcwd(), "log", "TestNetflow.paramiko.log")
+
+    userargs = init_args().parse_args()
 
     level = "INFO"
     if userargs.debug:
