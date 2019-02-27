@@ -3,7 +3,6 @@
 from __future__ import print_function
 
 import os
-import sys
 
 from testnetflow.base.NetBaseObject import NetBaseObject
 from testnetflow.exceptions.ConfigurationError import ConfiguationError
@@ -19,7 +18,6 @@ class Server(NetBaseObject):
                                  + os.path.sep + "scripts" + os.path.sep + "SocketServer.py"
         self.script = os.path.basename(self.script_local_path)
         self.responseList = server_result_list
-
 
     def run(self):
         socket_list_index = 0
