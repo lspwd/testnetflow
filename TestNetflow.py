@@ -24,8 +24,10 @@ from testnetflow.util.Log import Log
 
 def main():
     date_format = time.strftime("%d-%b-%Y")
-    logname = os.getcwd() + os.sep + "log" + os.sep + "TestNetflow.log"
-    paramiko_logname = os.getcwd() + os.sep + "log" + os.sep + "TestNetflow.paramiko.log"
+
+    logname = os.path.join(os.getcwd(), "log", "TestNetflow.log")
+    paramiko_logname = os.path.join(os.getcwd(), "log", "TestNetflow.paramiko.log")
+    configfile = os.path.join(os.getcwd(), "properties", "config.yml")
 
     parser = argparse.ArgumentParser(prog='TestNetflow.py',
                                      formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=30))
@@ -47,7 +49,6 @@ def main():
     paramikolog = Log(paramiko_logname, level, "paramiko")
     logger = log.create_log()
     paramikologger = paramikolog.create_log()
-    configfile = os.getcwd() + os.path.sep + "properties" + os.path.sep + "config.yml"
     configurator = Configurator(configfile, logger)
     config_list = configurator.get_config()
 
