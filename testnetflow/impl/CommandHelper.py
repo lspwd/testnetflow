@@ -1,5 +1,6 @@
 from testnetflow.base.ChannelHelper import ChannelHelper
 
+
 class CommandHelper(ChannelHelper):
 
     def __init__(self, ps1, channel, logger, cmd):

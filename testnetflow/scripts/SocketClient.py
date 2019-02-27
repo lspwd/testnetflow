@@ -72,6 +72,7 @@ class SocketClient:
             except NameError:
                 pass
 
+
 if __name__ == '__main__':
 
     if len(sys.argv) != 5:
@@ -90,7 +91,7 @@ if __name__ == '__main__':
 
     socketClient = SocketClient(ip, port, timeout)
 
-    if deployed :
+    if deployed:
         request = str(uuid.uuid4())
         try:
             # print(request)

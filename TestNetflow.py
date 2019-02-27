@@ -109,8 +109,8 @@ if __name__ == '__main__':
                     print("DEBUG STDOUT: Thread-0(Main) -- Exception from Server class " + str(exception))
 
         # else:
-            # print("server_result_list: ")
-            # server_result_list.append(serverResponseList)
+        #     print("server_result_list: ")
+        #     server_result_list.append(serverResponseList)
 
         server_result_list = server_result_queue.get()
         s.join()

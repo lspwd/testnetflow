@@ -10,7 +10,7 @@ class Client(NetBaseObject):
     def __init__(self, username, password, mgmtip, attribute_list, logger, exception_queue,
                  result_queue, name, mutex, userargs, server_result_list):
         super(Client, self).__init__(username, password, mgmtip, attribute_list, logger,
-                                     exception_queue, result_queue, name, mutex, userargs )
+                                     exception_queue, result_queue, name, mutex, userargs)
         self.result_queue = result_queue
         self.script_local_path = os.getcwd() + os.path.sep + "testnetflow" + os.path.sep \
                                  + "scripts" + os.path.sep + "SocketClient.py"
@@ -72,10 +72,12 @@ class Client(NetBaseObject):
                         # print("Was the socket " + full_socket + " deployed by me? " + str(deployed))
 
                     if deployed:
-                        result = helper.runSocketClient(ip, port, self.userargs.clienttimeout, client, full_script_path, True)
+                        result = helper.runSocketClient(ip, port, self.userargs.clienttimeout, client, full_script_path,
+                                                        True)
                     else:
                         # print("full_socket here -> " + full_socket)
-                        result = helper.runSocketClient(ip, port, self.userargs.clienttimeout, client, full_script_path, False)
+                        result = helper.runSocketClient(ip, port, self.userargs.clienttimeout, client, full_script_path,
+                                                        False)
                     if result:
                         ipprodclient_list.append((full_socket, True))
                     else:

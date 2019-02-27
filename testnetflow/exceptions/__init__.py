@@ -1,1 +1,2 @@
-__all__ = ["ConfigurationError", "FileNotFoundError", "PythonNotFoundError", "SocketError", "SudoNotFoundError", "TimeoutError"]
+__all__ = ["ConfigurationError", "FileNotFoundError", "PythonNotFoundError", "SocketError", "SudoNotFoundError",
+           "TimeoutError"]

@@ -32,7 +32,7 @@ class ChannelHelper(object):
                 except  Exception as ex1:
                     print("scan_buffer_end(): RunTimeError " + str(ex1))
                     self.logger.error("scan_buffer_end(): Timeout event while scanning buffer: " + str(ex1))
-                    raise RuntimeError("scan_buffer_end() got an exception " +str(ex1))
+                    raise RuntimeError("scan_buffer_end() got an exception " + str(ex1))
             else:
                 self.logger.error("scan_buffer_end(): Buffer scanning error: Can not find pattern " + testpattern)
                 raise RuntimeError("scan_buffer_end(): Timeout for the method reached")
