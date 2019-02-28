@@ -98,7 +98,7 @@ def main():
          range(len(config_list[index]["client"]["server_list_to_test"]))) for index in range(len(config_list))]
 
     for position, server in enumerate(server_list):
-        name = "Thread-" + str(count)
+        name = "Thread-{}".format(count)
         if not server_list[position]["try_to_spawn_socket_on_remote_server"]:
             map(lambda socket: server_result_list.append(
                 {"socket": socket["address"] + ":" + socket["port"], "deployed": False}),
@@ -133,7 +133,7 @@ def main():
         s.join()
 
     for i in range(len(config_list)):
-        name = "Thread-" + str(count)
+        name = "Thread-{}".format(count)
 
         [map(lambda x: client_list.append(x), config_list[i]["client"]["server_list_to_test"][idx]["socket_to_test"])
          for idx in range(len(config_list[i]["client"]["server_list_to_test"]))]
