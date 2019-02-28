@@ -51,8 +51,9 @@ class SSHHelper(object):
 
     def testListenState(self, ip, port, client):
 
-        cmd = '/bin/netstat -ntl | /bin/egrep -o ''\'' + ip + ':' \
-              + port + '[ ]{1}|0.0.0.0:' + port + '[ ]{1}|::.*:' + port + '\''
+        # We use ss(1) because it's present RHEL 6 (and on Debian 5, but in /sbin)
+        cmd = "/usr/sbin/ss -4nlt sport eq :{port}|grep -v State".format(port=port)
+
         stdin, stdout, stderr = client.exec_command(cmd)
         result = stdout.read().strip('\n')
         # resulterr = stderr.read().strip("\n")
