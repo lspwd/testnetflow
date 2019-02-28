@@ -14,8 +14,7 @@ class Server(NetBaseObject):
                  exception_queue, result_queue, tid, mutex, userargs, server_result_list):
         super(Server, self).__init__(username, password, mgmtip, attribute_list, logger,
                                      exception_queue, result_queue, tid, mutex, userargs)
-        self.script_local_path = os.getcwd() + os.path.sep + "testnetflow" \
-                                 + os.path.sep + "scripts" + os.path.sep + "SocketServer.py"
+        self.script_local_path = os.path.join(os.getcwd(), "testnetflow", "scripts", "SocketServer.py")
         self.script = os.path.basename(self.script_local_path)
         self.responseList = server_result_list
 
