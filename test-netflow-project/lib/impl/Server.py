@@ -2,11 +2,12 @@
 
 from __future__ import print_function
 
+import os
 import sys
+
+from ConfigurationError import ConfiguationError
 from NetBaseObject import NetBaseObject
 from SSHServerHelper import SSHServerHelper
-import os
-from ConfigurationError import ConfiguationError
 
 
 class Server(NetBaseObject):

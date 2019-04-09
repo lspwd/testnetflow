@@ -8,15 +8,15 @@
 
 import Queue
 import argparse
+import os
 import threading
 import time
-import os
 
-from Server import Server
-from Client import Client
 from AnalyzeData import AnalyzeData
+from Client import Client
 from Configurator import Configurator
 from Log import Log
+from Server import Server
 
 ##############################################################
 
