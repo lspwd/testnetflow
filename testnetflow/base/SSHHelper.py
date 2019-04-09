@@ -2,9 +2,10 @@ import os
 
 import paramiko
 
-from FileNotFoundError import FileNotFoundError
-from PythonNotFoundError import PythonNotFoundError
-from SudoHelper import SudoHelper
+from testnetflow.exceptions.FileNotFoundError import FileNotFoundError
+from testnetflow.exceptions.PythonNotFoundError import PythonNotFoundError
+from testnetflow.impl.SudoHelper import SudoHelper
+
 
 class SSHHelper(object):
 
@@ -49,9 +50,27 @@ class SSHHelper(object):
         return tuple(map(int, v.split(".")))
 
     def testListenState(self, ip, port, client):
+        def locatebin(path):
+            cmd = "whereis -b {}".format(path)
+            stdin, stdout, stderr = client.exec_command(cmd)
+            result = stdout.read().strip('\n')
 
-        cmd = '/bin/netstat -ntl | /bin/egrep -o ''\'' + ip + ':' \
-              + port + '[ ]{1}|0.0.0.0:' + port + '[ ]{1}|::.*:' + port + '\''
+            return result
+
+        # We use ss(1) because it's present on RHEL 6+ and on Debian 5+
+        # Due to the fact that on Debian 5 ss is in /sbin, and on Debian 6+ is in /bin,
+        # and on RHEL 6 is in /usr/sbin, we need to check where is the executable
+        cmd = locatebin("ss")
+        if not cmd:
+            msg = '{} "{}:{}" cannot find "ss" command'.format(self.tid, ip, port)
+            print("DEBUG STDOUT: {}".format(msg)) if self.userargs.stdout else None
+            self.logger.debug(msg)
+            return False
+        else:
+            cmd = cmd.split()[1]
+
+        cmd += " -4nlt sport eq :{port}|grep -v State".format(port=port)
+
         stdin, stdout, stderr = client.exec_command(cmd)
         result = stdout.read().strip('\n')
         # resulterr = stderr.read().strip("\n")

@@ -1,5 +1,5 @@
-import threading
 import sys
+import threading
 
 
 class AnalyzeData(threading.Thread):

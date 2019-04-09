@@ -6,38 +6,56 @@
 # Test NetFlows oO Threaded 2.0
 #############################################################
 
-import Queue
 import argparse
+import os
+import Queue
 import threading
 import time
-import os
 
-from Server import Server
-from Client import Client
-from AnalyzeData import AnalyzeData
-from Configurator import Configurator
-from Log import Log
+from testnetflow.impl.Client import Client
+from testnetflow.impl.Server import Server
+from testnetflow.util.AnalyzeData import AnalyzeData
+from testnetflow.util.Configurator import Configurator
+from testnetflow.util.Log import Log
+
 
 ##############################################################
 
 
-if __name__ == '__main__':
+def init_args():
+    """
+    Initialize command line arguments
+    :return: a parser for command line arguments
+    """
 
-    date_format = time.strftime("%d-%b-%Y")
-    logname = os.getcwd() + os.sep + "log" + os.sep + "TestNetflow.log"
-    paramiko_logname = os.getcwd() + os.sep + "log" + os.sep + "TestNetflow.paramiko.log"
+    # Default values
+    configfile = os.path.join(os.getcwd(), "properties", "config.yml")
+    ctimeout = "3"
+    stimeout = "20"
 
     parser = argparse.ArgumentParser(prog='TestNetflow.py',
                                      formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=30))
+    parser.add_argument("-c", "--cfg", help="use specified config file (default {})".format(configfile),
+                        default=configfile)
     parser.add_argument("-d", "--debug", help="turn on debug log level", action="store_true")
-    parser.add_argument("-ct", "--clienttimeout", type=str,
-                        help="socket client timeout (default: 3 sec)", default="3")
-    parser.add_argument("-st", "--servertimeout", type=str,
-                        help="socket client timeout (default: 20 sec)", default="20")
+    parser.add_argument("-ct", "--clienttimeout", help="socket client timeout (default: {} sec)".format(ctimeout),
+                        type=str, default=ctimeout)
+    parser.add_argument("-st", "--servertimeout", help="socket client timeout (default: {} sec)".format(stimeout),
+                        type=str, default=stimeout)
     parser.add_argument("-s", "--stdout", help="Output Debug actions on stdout", action="store_true")
     parser.add_argument("-v", "--version", help="Display the version of the program", action="version",
                         version="Antica Innesteria Dippolitoni presents: %(prog)s 2.0")
-    userargs = parser.parse_args()
+
+    return parser
+
+
+def main():
+    date_format = time.strftime("%d-%b-%Y")
+
+    logname = os.path.join(os.getcwd(), "log", "TestNetflow.log")
+    paramiko_logname = os.path.join(os.getcwd(), "log", "TestNetflow.paramiko.log")
+
+    userargs = init_args().parse_args()
 
     level = "INFO"
     if userargs.debug:
@@ -47,8 +65,7 @@ if __name__ == '__main__':
     paramikolog = Log(paramiko_logname, level, "paramiko")
     logger = log.create_log()
     paramikologger = paramikolog.create_log()
-    configfile = os.getcwd() + os.path.sep + "properties" + os.path.sep + "config.yml"
-    configurator = Configurator(configfile, logger)
+    configurator = Configurator(userargs.cfg, logger)
     config_list = configurator.get_config()
 
     client_list = []
@@ -81,7 +98,7 @@ if __name__ == '__main__':
          range(len(config_list[index]["client"]["server_list_to_test"]))) for index in range(len(config_list))]
 
     for position, server in enumerate(server_list):
-        name = "Thread-" + str(count)
+        name = "Thread-{}".format(count)
         if not server_list[position]["try_to_spawn_socket_on_remote_server"]:
             map(lambda socket: server_result_list.append(
                 {"socket": socket["address"] + ":" + socket["port"], "deployed": False}),
@@ -109,14 +126,14 @@ if __name__ == '__main__':
                     print("DEBUG STDOUT: Thread-0(Main) -- Exception from Server class " + str(exception))
 
         # else:
-            # print("server_result_list: ")
-            # server_result_list.append(serverResponseList)
+        #     print("server_result_list: ")
+        #     server_result_list.append(serverResponseList)
 
         server_result_list = server_result_queue.get()
         s.join()
 
     for i in range(len(config_list)):
-        name = "Thread-" + str(count)
+        name = "Thread-{}".format(count)
 
         [map(lambda x: client_list.append(x), config_list[i]["client"]["server_list_to_test"][idx]["socket_to_test"])
          for idx in range(len(config_list[i]["client"]["server_list_to_test"]))]
@@ -172,3 +189,7 @@ if __name__ == '__main__':
     print("*" * 80)
     #
     ###########################################################################
+
+
+if __name__ == '__main__':
+    main()

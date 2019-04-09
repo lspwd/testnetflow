@@ -1,4 +1,5 @@
-from ChannelHelper import ChannelHelper
+from testnetflow.base.ChannelHelper import ChannelHelper
+
 
 class CommandHelper(ChannelHelper):
 

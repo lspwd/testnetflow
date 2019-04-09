@@ -1,4 +1,5 @@
 import sys
+
 import yaml
 from yaml import YAMLError
 
@@ -14,6 +15,6 @@ class Configurator:
             with open(self.configfile) as cfile:
                 self.configlist = yaml.load(cfile)
                 return self.configlist
-        except (YAMLError,Exception) as err:
+        except (YAMLError, Exception) as err:
             self.logger.error('Error in parsing configuration file %s, %s', self.configfile, err)
             sys.exit(1)

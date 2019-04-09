@@ -1,7 +1,7 @@
 from CommandHelper import CommandHelper
 from SudoHelper import SudoHelper
-from SSHHelper import SSHHelper
-from SudoNotFoundError import SudoNotFoundError
+from testnetflow.base.SSHHelper import SSHHelper
+from testnetflow.exceptions.SudoNotFoundError import SudoNotFoundError
 
 
 class SSHServerHelper(SSHHelper):

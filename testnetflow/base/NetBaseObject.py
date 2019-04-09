@@ -1,8 +1,9 @@
-import threading
-from PythonNotFoundError import PythonNotFoundError
 import socket
-from   multiprocessing import Process, Queue
+import threading
 import time
+from multiprocessing import Process, Queue
+
+from testnetflow.exceptions.PythonNotFoundError import PythonNotFoundError
 
 
 class NetBaseObject(threading.Thread):
@@ -32,9 +33,9 @@ class NetBaseObject(threading.Thread):
             python_she_bang = "#!" + helper.checkPythonPath(client)
             if helper.checkPythonVersion(self.python_min_version, client):
                 if not helper.isUploaded():
-                    if helper.upload(client, script_local_path, script_name, script_remote_path,):
-                        helper.chmodOnScript(client, self.permission_bit, script_remote_path+script_name)
-                        helper.sedTheSheBang(client, python_she_bang, script_remote_path+script_name)
+                    if helper.upload(client, script_local_path, script_name, script_remote_path, ):
+                        helper.chmodOnScript(client, self.permission_bit, script_remote_path + script_name)
+                        helper.sedTheSheBang(client, python_she_bang, script_remote_path + script_name)
                     else:
                         raise RuntimeError("Unable to upload script on the remote machine")
                 return client
@@ -61,7 +62,7 @@ class NetBaseObject(threading.Thread):
             time.sleep(0.5)
             if q.empty():
                 p.terminate()
-                raise RuntimeError("Unable to resolve hostname " + ip )
+                raise RuntimeError("Unable to resolve hostname " + ip)
             else:
                 ip = q.get(timeout=2)
                 p.terminate()
@@ -77,11 +78,11 @@ class NetBaseObject(threading.Thread):
             except NameError:
                 pass
 
-    def internalNameResolution(self,ip):
+    def internalNameResolution(self, ip):
         try:
             return self.resolveHostname(ip)
         except RuntimeError as e:
-            raise(e)
+            raise (e)
 
     def run(self):
         pass
