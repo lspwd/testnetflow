@@ -1,5 +1,6 @@
-from SSHHelper import SSHHelper
 import re
+
+from SSHHelper import SSHHelper
 
 
 class SSHClientHelper(SSHHelper):

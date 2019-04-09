@@ -1,8 +1,9 @@
-import threading
-from PythonNotFoundError import PythonNotFoundError
 import socket
-from   multiprocessing import Process, Queue
+import threading
 import time
+from   multiprocessing import Process, Queue
+
+from PythonNotFoundError import PythonNotFoundError
 
 
 class NetBaseObject(threading.Thread):

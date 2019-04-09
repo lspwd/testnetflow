@@ -1,6 +1,6 @@
 from CommandHelper import CommandHelper
-from SudoHelper import SudoHelper
 from SSHHelper import SSHHelper
+from SudoHelper import SudoHelper
 from SudoNotFoundError import SudoNotFoundError
 
 
