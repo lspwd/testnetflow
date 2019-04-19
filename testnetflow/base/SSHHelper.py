@@ -118,8 +118,9 @@ class SSHHelper(object):
             if not self.checkTheSheBang(python_she_bang):
                 cmd = "sed -i 's@#!/usr/bin/python@" + python_she_bang + "@g' " + target_script
                 stdin, stdout, stderr = client.exec_command(cmd)
-                if stderr:
-                    raise RuntimeError("Unable to sed the shebang on the remote machine")
+                string_stderr = stderr.read()
+                if len(string_stderr):
+                    raise RuntimeError("Unable to sed the shebang on the remote machine"+str(string_stderr))
         except Exception as e:
             raise RuntimeError("Unable to sed the shebang on the remote machine: " + str(e))
 

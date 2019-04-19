@@ -21,6 +21,16 @@
         port: '9999'
         under_load_balancer: false
         load_balancer_address:
+    server_list_to_test:
+    - ssh_server_ip_address: 10.6.1.3
+      ssh_server_username: administrator
+      ssh_server_password: '@Password'
+      try_to_spawn_socket_on_remote_server: true
+      socket_to_test:
+      - address: 10.0.2.10
+        port: '3128'
+        under_load_balancer: false
+        load_balancer_address:
     - ssh_server_ip_address:
       ssh_server_username:
       ssh_server_password:
@@ -33,5 +43,5 @@
         load_balancer_address:
       - address: 172.26.166.49
         port: '80'
-        under_load_balancer: false
-        load_balancer_address:
+        under_load_balancer: true
+        load_balancer_address: 172.26.166.50:8081

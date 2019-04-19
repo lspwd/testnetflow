@@ -151,6 +151,7 @@ def main():
                                server_result_list)
         client_thread.start()
         client_thread_list.append(client_thread)
+        client_list = []
         count += 1
 
     for c in client_thread_list:
