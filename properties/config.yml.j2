@@ -1,0 +1,95 @@
+{% for client in hosts_cmdconnect %}
+- client:
+    ssh_client_ip_address: {{ ansible_host }}
+    ssh_client_username: {{ ansible_ssh_user }}
+    ssh_client_password: {{ ansible_sudo_password }}
+    server_list_to_test:
+    {% for server_name in hosts_cmdboapp %}
+    - ssh_server_ip_address: {{ ansible_host }}
+      ssh_server_username: {{ ansible_ssh_user }}
+      ssh_server_password: {{ ansible_sudo_password }}
+      try_to_spawn_socket_on_remote_server: {{ try_spawn }}
+      socket_to_test:
+      - address: {{ public_ip }}
+        port: {{ protocols["RMI_1599"]["port"] }}
+        under_load_balancer: {{ protocols["RMI_1599"]["use_loadbalancer"] }}
+        load_balancer_address: {{ loadbalancer_ip }}
+    {% endfor %}
+    {% for server_name in hosts_cmdbroker %}
+    - ssh_server_ip_address: {{ ansible_host }}
+      ssh_server_username: {{ ansible_ssh_user }}
+      ssh_server_password: {{ ansible_sudo_password }}
+      try_to_spawn_socket_on_remote_server: {{ try_spawn }}
+      socket_to_test:
+      - address: {{ public_ip }}
+        port: {{ protocols["JMS_61616"]["port"] }}
+        under_load_balancer: {{ protocols["JMS_61616"]["use_loadbalancer"] }}
+        load_balancer_address: {{ loadbalancer_ip }}
+    {% endfor %}
+    {% for server_name in hosts_cmddb %}
+    - ssh_server_ip_address: {{ ansible_host }}
+      ssh_server_username: {{ ansible_ssh_user }}
+      ssh_server_password: {{ ansible_sudo_password }}
+      try_to_spawn_socket_on_remote_server: {{ try_spawn }}
+      socket_to_test:
+      - address: {{ public_ip }}
+        port: {{ protocols["DB2_50000"]["port"] }}
+        under_load_balancer: {{ protocols["DB2_50000"]["use_loadbalancer"] }}
+        load_balancer_address: {{ loadbalancer_ip }}
+    {% endfor %}
+    {% for server_name in hosts_cmdpam %}
+    - ssh_server_ip_address: {{ ansible_host }}
+      ssh_server_username: {{ ansible_ssh_user }}
+      ssh_server_password: {{ ansible_sudo_password }}
+      try_to_spawn_socket_on_remote_server: {{ try_spawn }}
+      socket_to_test:  
+      - address: {{ public_ip }}
+        port: {{ protocols["RMI_4547"]["port"] }}
+        under_load_balancer: {{ protocols["RMI_4547"]["use_loadbalancer"] }}
+        load_balancer_address: {{ loadbalancer_ip }}
+    {% endfor %}
+    {% for server_name in hosts_hsapp %}
+    - ssh_server_ip_address: {{ ansible_host }}
+      ssh_server_username: {{ ansible_ssh_user }}
+      ssh_server_password: {{ ansible_sudo_password }}
+      try_to_spawn_socket_on_remote_server: {{ try_spawn }}
+      socket_to_test:  
+      - address: {{ public_ip }}
+        port: {{ protocols["HTTP_80"]["port"] }}
+        under_load_balancer: {{ protocols["HTTP_80"]["use_loadbalancer"] }}
+        load_balancer_address: {{ loadbalancer_ip }}
+    {% endfor %}
+    {% for server_name in hosts_payapp %}
+    - ssh_server_ip_address: {{ ansible_host }}
+      ssh_server_username: {{ ansible_ssh_user }}
+      ssh_server_password: {{ ansible_sudo_password }}
+      try_to_spawn_socket_on_remote_server: {{ try_spawn }}
+      socket_to_test:  
+      - address: {{ public_ip }}
+        port: {{ protocols["HTTP_8188"]["port"] }}
+        under_load_balancer: {{ protocols["HTTP_8188"]["use_loadbalancer"] }}
+        load_balancer_address: {{ loadbalancer_ip }}
+    {% endfor %}
+    {% for server_name in hosts_payboapp %}
+    - ssh_server_ip_address: {{ ansible_host }}
+      ssh_server_username: {{ ansible_ssh_user }}
+      ssh_server_password: {{ ansible_sudo_password }}
+      try_to_spawn_socket_on_remote_server: {{ try_spawn }}
+      socket_to_test:  
+      - address: {{ public_ip }}
+        port: {{ protocols["HTTP_8188"]["port"] }}
+        under_load_balancer: {{ protocols["HTTP_8188"]["use_loadbalancer"] }}
+        load_balancer_address: {{ loadbalancer_ip }}
+    {% endfor %}
+    {% for server_name in hosts_pdbroker %}
+    - ssh_server_ip_address: {{ ansible_host }}
+      ssh_server_username: {{ ansible_ssh_user }}
+      ssh_server_password: {{ ansible_sudo_password }}
+      try_to_spawn_socket_on_remote_server: {{ try_spawn }}
+      socket_to_test:  
+      - address: {{ public_ip }}
+        port: {{ protocols["HTTP_6666"]["port"] }}
+        under_load_balancer: {{ protocols["HTTP_6666"]["use_loadbalancer"] }}
+        load_balancer_address: {{ loadbalancer_ip }}
+    {% endfor %}
+{% endfor %}

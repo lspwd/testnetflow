@@ -1,37 +1,410 @@
----
 - client:
-    ssh_client_ip_address: 10.6.1.2
-    ssh_client_username: administrator
-    ssh_client_password: Password2
     server_list_to_test:
-    - ssh_server_ip_address: 10.6.1.2
-      ssh_server_username: administrator
-      ssh_server_password: Password2
+    - socket_to_test:
+      - address: ref-refdev-cmdbroker00.prod
+        load_balancer_address: ''
+        port: 61616
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
       try_to_spawn_socket_on_remote_server: true
-      socket_to_test:
-      - address: test-server
-        port: "3128"
+    - socket_to_test:
+      - address: ref-refdev-cmddb00.prod
+        load_balancer_address: ''
+        port: 50000
         under_load_balancer: false
-        load_balancer_address:
-      - address: test-server
-        port: "9998"
+      ssh_server_ip_address: ref-refdev-cmddb00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdbroker00.prod
+        load_balancer_address: ''
+        port: 6666
         under_load_balancer: false
-        load_balancer_address:
-      - address: 10.0.2.10
-        port: "9999"
-        under_load_balancer: true
-        load_balancer_address: 10.10.10.134:8080
-    - ssh_server_ip_address:
-      ssh_server_username:
-      ssh_server_password:
-      try_to_spawn_socket_on_remote_server: false
-      socket_to_test:
-      - address: 10.6.222.2
-        port: "3128"
-        try_to_spawn_socket_on_remote_server: false
+      ssh_server_ip_address: ref-refdev-pdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-estega00.prod
+        load_balancer_address: ''
+        port: 53380
         under_load_balancer: false
-        load_balancer_address:
-      - address: 172.26.166.49
-        port: "80"
+      ssh_server_ip_address: ref-refdev-estega00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-pdgaming00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-cmdbroker00.prod
+        load_balancer_address: ''
+        port: 61616
         under_load_balancer: false
-        load_balancer_address:
+      ssh_server_ip_address: ref-refdev-cmdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmddb00.prod
+        load_balancer_address: ''
+        port: 50000
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmddb00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdbroker00.prod
+        load_balancer_address: ''
+        port: 6666
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-pdcore00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-pdsecgateway00.prod
+        load_balancer_address: ''
+        port: 8480
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdsecgateway00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdpadgk00.prod
+        load_balancer_address: ''
+        port: 12080
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdpadgk00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-pdweb00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-cmdpadgk00.prod
+        load_balancer_address: ''
+        port: 8080
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdpadgk00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdbroker00.prod
+        load_balancer_address: ''
+        port: 80
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-pdsecgateway00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-cmdbroker00.prod
+        load_balancer_address: ''
+        port: 61616
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmddb00.prod
+        load_balancer_address: ''
+        port: 50000
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmddb00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdbroker00.prod
+        load_balancer_address: ''
+        port: 6666
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-cmdcontrolgk00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-cmdconnect00.prod
+        load_balancer_address: ''
+        port: 8380
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdconnect00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-payboweb00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-cmdconnect00.prod
+        load_balancer_address: ''
+        port: 4547
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdconnect00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdconnect00.prod
+        load_balancer_address: ''
+        port: 4647
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdconnect00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdconnect00.prod
+        load_balancer_address: ''
+        port: 4747
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdconnect00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdconnect00.prod
+        load_balancer_address: ''
+        port: 4847
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdconnect00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdpam00.prod
+        load_balancer_address: ''
+        port: 4547
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdpam00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdpam00.prod
+        load_balancer_address: ''
+        port: 4747
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdpam00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdbroker00.prod
+        load_balancer_address: ''
+        port: 80
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-cmdpadgk00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-cmdpam00.prod
+        load_balancer_address: ''
+        port: 8180
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdpam00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdsync00.prod
+        load_balancer_address: ''
+        port: 8380
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdsync00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdsecgateway00.prod
+        load_balancer_address: ''
+        port: 8480
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdsecgateway00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdcontrolgk00.prod
+        load_balancer_address: ''
+        port: 8580
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdcontrolgk00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdcore00.prod
+        load_balancer_address: ''
+        port: 8280
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdcore00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdconnect00.prod
+        load_balancer_address: ''
+        port: 8280
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdconnect00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdgaming00.prod
+        load_balancer_address: ''
+        port: 8180
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdgaming00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdprocesses00.prod
+        load_balancer_address: ''
+        port: 8380
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdprocesses00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdcontrolsolr00.prod
+        load_balancer_address: ''
+        port: 8580
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdcontrolsolr00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdadmin00.prod
+        load_balancer_address: ''
+        port: 8680
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdadmin00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdloyalty00.prod
+        load_balancer_address: ''
+        port: 9080
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdloyalty00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdasync00.prod
+        load_balancer_address: ''
+        port: 8480
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdasync00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-pdbroker00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-cmdcontrolgk00.prod
+        load_balancer_address: ''
+        port: 8580
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdcontrolgk00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdcontrolgk00.prod
+        load_balancer_address: ''
+        port: 8509
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdcontrolgk00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmdcontrolgk00.prod
+        load_balancer_address: ''
+        port: 23080
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdcontrolgk00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-cmdcontrolapache00.prod
+    ssh_client_password: performance
+    ssh_client_username: root
+- client:
+    server_list_to_test:
+    - socket_to_test:
+      - address: ref-refdev-cmdbroker00.prod
+        load_balancer_address: ''
+        port: 61616
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-cmddb00.prod
+        load_balancer_address: ''
+        port: 50000
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-cmddb00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    - socket_to_test:
+      - address: ref-refdev-pdbroker00.prod
+        load_balancer_address: ''
+        port: 6666
+        under_load_balancer: false
+      ssh_server_ip_address: ref-refdev-pdbroker00.prod
+      ssh_server_password: performance
+      ssh_server_username: root
+      try_to_spawn_socket_on_remote_server: true
+    ssh_client_ip_address: ref-refdev-cmdconnect00.prod
+    ssh_client_password: performance
+    ssh_client_username: root

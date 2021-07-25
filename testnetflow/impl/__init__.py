@@ -1,1 +1,2 @@
-__all__ = ["Client", "CommandHelper", "Server", "SSHClientHelper", "SSHServerHelper", "SudoHelper"]
+__all__ = ["ClientObjectImpl", "UnprivilegedCommandHandlerImpl", "ServerObjectImpl", "ClientHelperImpl",
+           "ServerHelperImpl", "PrivilegedCommandHandlerImpl", "CloserObjectImpl", "CloserHelperImpl"]

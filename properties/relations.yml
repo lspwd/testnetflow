@@ -1,0 +1,613 @@
+########################
+#Common Services
+########################
+
+pdweb:
+    {%if ilottery_test is defined and ilottery_test == true  %}
+    pdsecgateway:
+        port: 4503,4502
+        vip_port: 8480,4503,8080
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    {%if helpsi_test is defined and helpsi_test == true  %}
+    hsweb:
+        port: 80
+        try_to_spawn_socket_on_remote_server: false
+    hschat:
+        port: 8080
+        try_to_spawn_socket_on_remote_server: false
+    {% endif %}
+    {%if bingo_test is defined and bingo_test == true  %}
+    bingoweb:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    bingochat:
+        vip_port: 7070
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+#ALL Http vip connections for mod_proxy
+pdbroker:
+    {%if ilottery_test is defined and ilottery_test == true  %}
+    pdsecgateway:
+        vip_port: 8480
+        try_to_spawn_socket_on_remote_server: true
+    pdloyalty:
+        vip_port: 9080
+        try_to_spawn_socket_on_remote_server: true
+    pdprocesses:
+        vip_port: 8280,8380,8480,9080,9480,8080
+        try_to_spawn_socket_on_remote_server: true
+    pdgaming:
+        vip_port: 8180,8980,8280
+        try_to_spawn_socket_on_remote_server: true
+    pdadmin:
+        vip_port: 8680
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    {%if command_test is defined and ilottery_test == true  %}
+    cmdsync:
+        vip_port: 8380
+        try_to_spawn_socket_on_remote_server: true
+    cmdasync:
+        vip_port: 8480
+        try_to_spawn_socket_on_remote_server: true
+    cmdconnect:
+        vip_port: 8280
+        try_to_spawn_socket_on_remote_server: true
+    cmdpam:
+        vip_port: 8180
+        try_to_spawn_socket_on_remote_server: true
+    cmdbosvc:
+        vip_port: 8580{%if ilottery_test is defined and ilottery_test == true  %},8680{% endif %}
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    {%if sc_test is defined and sc_test == true  %}
+    scapp:
+        vip_port: 8480
+        try_to_spawn_socket_on_remote_server: true
+    scboapp:
+        vip_port: 8480
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+cmdbroker:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+########################
+#PlayLottery
+########################
+{%if ilottery_test is defined and ilottery_test == true  %}
+pdsecgateway:
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    pdweb:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    pdoauth:
+        vip_port: 8580,8180
+        try_to_spawn_socket_on_remote_server: false
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    gcsoutpx:
+        port: 80,443
+        try_to_spawn_socket_on_remote_server: false
+
+# All "pd-game" flows here
+pdgaming:
+    cmdbroker:
+        port: 61616
+        try_to_spawn_socket_on_remote_server: true
+    este:
+        port: 53380
+        try_to_spawn_socket_on_remote_server: false
+    pddb:
+        vip_port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    einstant:
+        port: 80
+        try_to_spawn_socket_on_remote_server: false
+
+# All "pd-crm" flows here
+pdprocesses:
+    cmdbroker:
+        port: 61616
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    pddb:
+        vip_port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    pdoauth:
+        port: 8580,8180
+        try_to_spawn_socket_on_remote_server: false
+    {%if pay_test is defined and pay_test == true  %}
+    payapp:
+        vip_port: 8188
+        try_to_spawn_socket_on_remote_server: true
+    payboapp:
+        vip_port: 8188
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    esaid:
+        port: 443
+        try_to_spawn_socket_on_remote_server: false
+    cmdbosvc:
+        vip_port: 8983
+        try_to_spawn_socket_on_remote_server: true
+    pdhsm:
+        vip_port: 443
+        try_to_spawn_socket_on_remote_server: false
+
+pddb:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+{% endif %}
+########################
+#COMMAND
+########################
+
+{%if command_test is defined and command_test == true  %}
+cmdconnect:
+    cmdbroker:
+        port: 61616
+        try_to_spawn_socket_on_remote_server: true
+    cmddb:
+        vip_port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    cmdbosvc:
+        vip_port: 8983
+        try_to_spawn_socket_on_remote_server: true
+    {%if helpsi_test is defined and helpsi_test == true  %}
+    hsapp:
+        port: 80
+        try_to_spawn_socket_on_remote_server: false
+    {% endif %}
+    {%if pay_test is defined and pay_test == true  %}
+    payapp:
+        vip_port: 8188
+        try_to_spawn_socket_on_remote_server: true
+    payboapp:
+        vip_port: 8188
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    gadmoutpx:
+        port: 80
+        try_to_spawn_socket_on_remote_server: false
+    {%if sns_test is defined and sns_test == true  %}
+    snsapp:
+        port: 8080
+        try_to_spawn_socket_on_remote_server: false
+    {% endif %}
+
+cmdpam:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    cmddb:
+        vip_port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    cmdbroker:
+        port: 61616
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+
+cmddb:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+cmdcontrolapache:
+    cmdbosvc:
+        vip_port: 8580,23080,8983
+        port: 4502
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+    {%if bingo_test is defined and bingo_test == true  %}
+    bingomanager:
+        vip_port: 8080
+        try_to_spawn_socket_on_remote_server: true
+    bingochat:
+        vip_port: 3030, 8080, 7070
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+
+    kibana:
+        port: 5601
+        try_to_spawn_socket_on_remote_server: true
+
+    {%if helpsi_test is defined and helpsi_test == true  %}
+    hsapp:
+        port: 80
+        try_to_spawn_socket_on_remote_server: false
+    hschat:
+        port: 9090,7070
+        try_to_spawn_socket_on_remote_server: false
+    hsreport:
+        port: 8080
+        try_to_spawn_socket_on_remote_server: false
+    {% endif %}
+
+    pdsecgateway:
+        vip_port: 9099,9292,8480,8187,80
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+
+    {%if sc_test is defined and sc_test == true  %}
+    scboapp:
+        vip_port: 8480
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+
+    {%if poker_test is defined and poker_test == true  %}
+    pokergp:
+        port: 9191
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+
+    tableau:
+        port: 80
+        try_to_spawn_socket_on_remote_server: false
+
+cmdbosvc:
+    cmdbroker:
+        port: 61616
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    cmddb:
+        vip_port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    {%if ilottery_test is defined and ilottery_test == true  %}
+    pddb:
+        vip_port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    pdsecgateway:
+        vip_port: 8480
+        port: 4503
+        try_to_spawn_socket_on_remote_server: true
+    pdcore:
+        vip_port: 8280,9080,8380
+        try_to_spawn_socket_on_remote_server: true
+    pdgame:
+        vip_port: 8980,8180
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    {%if einstant_test is defined and einstant_test == true  %}
+    einstant:
+        port: 18080
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+
+
+{%if perf_test is defined and perf_test == true  %}
+cmdbot:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    pdweb:
+        vip_port: 80
+        port: 80
+        try_to_spawn_socket_on_remote_server: true
+
+{% endif %}
+{% endif %}
+########################
+#PAY
+########################
+
+{%if pay_test is defined and pay_test == true  %}
+paycashier:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+payweb:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    payapp:
+        vip_port: 8019
+        try_to_spawn_socket_on_remote_server: true
+    paycashier:
+        vip_port: 8009
+        try_to_spawn_socket_on_remote_server: true
+
+payboweb:
+    payapp:
+        vip_port: 8188
+        try_to_spawn_socket_on_remote_server: true
+    payboapp:
+        vip_port: 8209
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+paybroker:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+payboapp:
+    {%if command_test is defined and command_test == true  %}
+    cmdconnect:
+        port: 8380
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    {%if ilottery_test is defined and ilottery_test == true  %}
+    pdboapp:
+        port: 7600
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    paybroker:
+        port: 61616
+        try_to_spawn_socket_on_remote_server: true
+    paydb:
+        vip_port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    payproxy:
+        port: 30443,31443,32443
+        try_to_spawn_socket_on_remote_server: false
+
+payapp:
+    paydb:
+        vip_port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    paybroker:
+        port: 61616
+        try_to_spawn_socket_on_remote_server: true
+    {%if ilottery_test is defined and ilottery_test == true  %}
+    pdboapp:
+        port: 7600
+        try_to_spawn_socket_on_remote_server: true
+    {% endif %}
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    payproxy:
+        port: 30443,31443,32443
+        try_to_spawn_socket_on_remote_server: false
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+
+{% endif %}
+########################
+#Bingo
+########################
+
+{%if bingo_test is defined and bingo_test == true  %}
+bingoweb:
+    bingogp:
+        vip_port: 9090,9099,7788,7799,9292
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+bingogp:
+    bingodb:
+        port: 1521
+        try_to_spawn_socket_on_remote_server: true
+    jackpot:
+        port: 9990
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    trng:
+        port: 12345
+        try_to_spawn_socket_on_remote_server: false
+
+jackpot:
+    jackpotdb:
+        port: 1521
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+bingomanager:
+    bingodb:
+        port: 1521
+        try_to_spawn_socket_on_remote_server: true
+    bingochat:
+        port: 5222
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    bingoweb:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+
+bingochat:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    bingochatdb:
+        port: 1521
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+
+{% endif %}
+
+########################
+#Poker
+########################
+
+
+{%if poker_test is defined and poker_test == true  %}
+
+
+pokerboapp:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    pokerchat:
+        vip_port: 9090
+        try_to_spawn_socket_on_remote_server: true
+    pokerdb:
+        port: 1521
+        try_to_spawn_socket_on_remote_server: true
+    pokergp:
+        port: 9090, 9099
+        try_to_spawn_socket_on_remote_server: true
+
+pokerdb:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+
+pokergp:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    pokerdb:
+        port: 1521
+        try_to_spawn_socket_on_remote_server: true
+    trng:
+        port: 12345
+        try_to_spawn_socket_on_remote_server: false
+    pdbroker:
+        port: 80
+        try_to_spawn_socket_on_remote_server: true
+    pokerriak:
+        port: 8087
+        try_to_spawn_socket_on_remote_server: true
+
+pokerpx:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    pokerchat:
+        vip_port: 7070
+        try_to_spawn_socket_on_remote_server: true
+    pokermap:
+        port: 5007
+        try_to_spawn_socket_on_remote_server: true
+    pokergp:
+        port: 62312,9090
+        try_to_spawn_socket_on_remote_server: true
+    pokerriak:
+        port: 8087
+        try_to_spawn_socket_on_remote_server: true
+
+{% endif %}
+
+########################
+#2ND chance
+########################
+
+{%if sc_test is defined and sc_test == true  %}
+scapp:
+    cmdbroker:
+        port: 61616
+        try_to_spawn_socket_on_remote_server: true
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    scdb:
+        port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    flexdraw:
+        port: 443
+        try_to_spawn_socket_on_remote_server: true
+scboapp:
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    scdb:
+        port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+scdb:
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+{% endif %}
+
+########################
+#SNS
+########################
+
+{%if sns_test is defined and sns_test == true  %}
+
+snsapp:
+    pdbroker:
+        vip_port: 80
+        try_to_spawn_socket_on_remote_server: true
+    snsdb:
+        port: 50000,60000
+        try_to_spawn_socket_on_remote_server: true
+    elk:
+        port: 9200,8200
+        try_to_spawn_socket_on_remote_server: true
+    snsoutpx:
+        port: 3128
+        try_to_spawn_socket_on_remote_server: true
+    snsmail:
+        port: 25
+        try_to_spawn_socket_on_remote_server: true
+{% endif %}
